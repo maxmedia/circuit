@@ -5,7 +5,7 @@ describe Behaviors::Forward do
   include SpecHelpers::MultiSiteHelper
 
   def app
-    stub_app_with_circuit_site setup_site!('www.example.org', Behaviors::Forward)
+    stub_app_with_circuit_site setup_site!(root.site, Behaviors::Forward)
   end
 
   context 'GET /' do

@@ -13,60 +13,22 @@ describe Circuit::Rack::MultiSite do
 
   context 'GET example.com' do
     before do
-      setup_site! "example.com"
-      get "http://example.com/"
+      get "http://#{site.host}/"
     end
 
     context "status" do
       subject { last_response.status }
       it { should == 200 }
     end
-
   end
 
   context "GET baddomain.com" do
-
-    context 'with default site' do
-      before do
-        setup_site! "example.com"
-        get "http://baddomain.com/"
-      end
-
-      context "status" do
-        subject { last_response.status }
-        it { should == 301 }
-      end
-
-      context "location headers" do
-        subject { last_response.headers['Location'] }
-        it { should == "http://www.example.org" }
-      end
-
+    before do
+      get "http://baddomain.com/"
     end
 
-    context 'without default site' do
-      before do
-        Circuit.instance_variable_set("@default_host", nil)
-        setup_site! "example.com"
-        get "http://baddomain.com/"
-      end
-
-      after do
-        Circuit.load_hosts! "spec/internal/config/circuit_hosts.yml"
-      end
-
-      context "status" do
-        subject { last_response.status }
-        it { should == 404 }
-      end
-
-      context "body" do
-        subject { last_response.body }
-        it { should == "not found" }
-      end
-
-    end
-
+    subject { last_response }
+    it { subject.status.should == 404 }
+    it { subject.body.should == "Not Found"}
   end
-
 end

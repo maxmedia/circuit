@@ -86,7 +86,7 @@ module Circuit
       end
 
     protected #######################################################################
-      
+
       # sets objects from another stacks' objects.
       # TODO: validate other is a kind of stack
       # @private
@@ -95,7 +95,7 @@ module Circuit
       end
 
       # validates the presence of the `index` object when trying to insert `where`.
-      # @raises [NoSuchObjectError] raises when the index is out of bounds or the 
+      # @raises [NoSuchObjectError] raises when the index is out of bounds or the
       #                             `index` does not exist in the stack.
       # @returns [Integer]          index of the `index` object
       def assert_index(index, where)
