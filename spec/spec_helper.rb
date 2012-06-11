@@ -10,12 +10,13 @@ require 'bundler'
 require 'simplecov'
 SimpleCov.start
 
-Bundler.require :default, :development
+required_groups = [:default, :development]
 
 $mongo_tests = true
 begin
-  Bundler.require(:mongo)
+  Bundler.require *required_groups, :mongo
 rescue LoadError
+  Bundler.require *required_groups
   $mongo_tests = false
 end
 
