@@ -30,7 +30,7 @@ group :mongo do
 end
 
 # Specify core dependencies in core.gemspec
-gemspec
+gemspec path: "../"
 
 gem "activesupport", "< 3.2"
 gem "activemodel", "< 3.2"

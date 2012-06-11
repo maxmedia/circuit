@@ -19,4 +19,4 @@ group :development, :test do
 end
 
 # Specify core dependencies in core.gemspec
-gemspec
+gemspec path: "../"
