@@ -18,6 +18,11 @@ group :development, :test do
   gem "thor",               "< 0.15"
 end
 
+group :development do
+  gem "yard",               "~> 0.8"
+  gem "redcarpet",          "~> 2.1"
+end
+
 group :mongo do
   gem "mongoid",            "~> 2.4"
   gem "mongoid-tree",       "~> 0.7"
