@@ -12,13 +12,14 @@ SimpleCov.start
 
 required_groups = [:default, :development]
 
-$mongo_tests = true
+# Require gems and attempt to load mongo
 begin
   Bundler.require *required_groups, :mongo
 rescue LoadError
   Bundler.require *required_groups
-  $mongo_tests = false
 end
+# Determine if we want to run tests with mongo (i.e. whether mongo was loaded)
+$mongo_tests = !!Bundler.definition.requested_specs.detect {|s| s.name == "mongo"}
 
 require 'combustion'
 require 'capybara/rspec'
