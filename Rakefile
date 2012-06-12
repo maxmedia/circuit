@@ -11,8 +11,7 @@ require "yard/rake/yardoc_task"
 desc "Generate Yardoc documentation"
 YARD::Rake::YardocTask.new do |yardoc|
   yardoc.name       = "doc"
-  yardoc.options    = ["--verbose", "--markup", "markdown"]
-  yardoc.files      = Dir[ *%w[lib/**/*.rb config.ru *file README.md LICENSE] ].tap do |a|
+  yardoc.files      = Dir[ *%w[lib/**/*.rb config.ru *file] ].tap do |a|
                         a.delete_if {|fn| File.basename(fn) =~ /^\./}
                       end
 end
