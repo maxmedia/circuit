@@ -1,5 +1,6 @@
 require 'active_support/inflector/methods'
 require 'active_support/dependencies'
+require 'active_support/core_ext/module/delegation'
 require 'monitor'
 
 module Circuit
@@ -12,11 +13,31 @@ module Circuit
     # This code is originally inspired by rails middleware configs but has
     # been altered to support inherited stacks and some other functionality.
     class Stack
-      class NoSuchObjectError < Exception ;; end
+      # Raised when a requested index does not exist in a Stack.
+      class NoSuchObjectError < Exception; end
+
       include Enumerable
 
-      # array of objects that the stack operates on
+      # @return [Array] array of middleware objects that the stack operates on
       attr_accessor :objects
+
+      # @!method empty?
+      #   @return [true,false] true if the Stack is empty.
+      #   @see Array#empty?
+      # @!method each
+      #   Iterates over each middleware in the Stack
+      #   @yield [Object] each middleware object
+      #   @see Array#each
+      # @!method size
+      #   @return [Integer] number of middlewares in the stack
+      #   @see Array#size
+      # @!method last
+      #   @return [Object] last middleware object in the stack
+      #   @see Array#last
+      # @!method clear
+      #   Remove all middleware objects from the Stack
+      #   @see Array#clear
+      delegate :empty?, :each, :size, :last, :clear, to: :objects
 
       def initialize(*args, &block)
         @@monitor = Monitor.new
@@ -25,83 +46,92 @@ module Circuit
         @objects.uniq!
       end
 
-      # duplicates stack and it's objects
+      # Duplicates the stack and it's middleware objects
+      # @return [Stack] duplicated stack
       def dup
-        self.class.new.tap{|obj| obj.initialize_copi self }
+        self.class.new.tap { |obj| reverse_dup_copy obj }
       end
 
-      def empty?
-        objects.empty?
-      end
-
-      def configure(*args)
+      # Configure the Stack in a synchronized block
+      # @yield [Stack] the middleware Stack
+      def configure
         @@monitor.synchronize {
           yield(self) if block_given?
         }
       end
 
-      def each
-        @objects.each { |x| yield x }
-      end
-
-      def size
-        objects.size
-      end
-
-      def last
-        objects.last
-      end
-
-      def insert(index, block_klass, &block)
-        index = assert_index(index, :before)
-        template = block_klass
+      # Insert a middleware object into the stack at target index
+      # @param [Integer,Object]     target middleware index or object to insert
+      #                             at
+      # @param [Object]             middleware object to insert
+      # @raise [NoSuchObjectError]  if the target middleware object is not 
+      #                             found in the Stack
+      def insert(target, middleware)
+        index = assert_index(target, :before)
+        template = middleware
         objects.insert(index, template)
       end
-
       alias_method :insert_before, :insert
 
-      def insert_after(index, *args, &block)
-        index = assert_index(index, :after)
-        insert(index + 1, *args, &block)
+      # Insert a middleware object into the stack after target index
+      # @param [Integer,Object]     target middleware index or object to insert
+      #                             after
+      # @param [Object]             middleware object to insert
+      # @raise [NoSuchObjectError]  if the target middleware object is not 
+      #                             found in the Stack
+      def insert_after(target, middleware)
+        index = assert_index(target, :after)
+        insert(index + 1, middleware)
       end
 
-      def swap(target, *args, &block)
-        insert_before(target, *args, &block)
+      # Insert a middleware object into the stack in place of a target 
+      # middleware object
+      # @param [Integer,Object]     target middleware index or object to swap
+      #                             out
+      # @param [Object]             middleware to swap in
+      # @raise [NoSuchObjectError]  if the target middleware object is not 
+      #                             found in the Stack
+      # @return [Object]            target middleware that was swapped-out of
+      #                             the stack
+      def swap(target, middleware)
+        insert_before(target, middleware)
         delete(target)
       end
 
+      # Delete a middleware from the stack
+      # @param [Integer,Object] target middleware index or object to delete
       def delete(target)
-        objects.delete target
+        index = assert_index(target, :at)
+        objects.delete_at index
       end
-
       alias_method :skip, :delete
 
-      def use(block_klass, &block)
-        template = block_klass
+      # Append the middleware object to the end of Stack
+      # @param [Object] middleware object to append
+      def use(middleware, &block)
+        template = middleware
         objects.push(template)
       end
 
-      def clear
-        objects.replace []
+      protected
+
+      # Validates the presence of the target middleware object when trying to insert `where`.
+      # @param [Integer,Object]     target middleware index or object to find
+      # @param [Symbol]             where to insert -- `:before` or `:after`
+      # @raise  [NoSuchObjectError] if the target is not in the Stack
+      # @return [Integer]           index of the target object
+      def assert_index(target, where)
+        i = target.is_a?(Integer) ? target : objects.index(target)
+        raise NoSuchObjectError, "No such stack object to insert #{where}: #{target.inspect}" unless i
+        i
       end
 
-    protected #######################################################################
+      private
 
       # sets objects from another stacks' objects.
       # TODO: validate other is a kind of stack
-      # @private
-      def initialize_copi(other)
-        self.objects = other.objects.dup
-      end
-
-      # validates the presence of the `index` object when trying to insert `where`.
-      # @raises [NoSuchObjectError] raises when the index is out of bounds or the
-      #                             `index` does not exist in the stack.
-      # @returns [Integer]          index of the `index` object
-      def assert_index(index, where)
-        i = index.is_a?(Integer) ? index : objects.index(index)
-        raise NoSuchObjectError, "No such stack object to insert #{where}: #{index.inspect}" unless i
-        i
+      def reverse_dup_copy(new_stack)
+        new_stack.objects = self.objects.dup
       end
     end
   end
