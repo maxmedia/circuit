@@ -72,10 +72,10 @@ describe Circuit::Rack::Behavioral do
       it { should == :rewritten }
     end
 
-    context 'when raised ::Circuit::Behavior::RewriteException' do
+    context 'when raised ::Circuit::Behavior::RewriteError' do
       before do
         behavior.expects(:respond_to?).with(:rewrite!).once.returns(true)
-        behavior.expects(:rewrite!).raises(::Circuit::Behavior::RewriteException)
+        behavior.expects(:rewrite!).raises(::Circuit::Behavior::RewriteError)
       end
 
       it { should == :rewrite_failed }

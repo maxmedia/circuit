@@ -14,7 +14,7 @@ module Circuit
     # been altered to support inherited stacks and some other functionality.
     class Stack
       # Raised when a requested index does not exist in a Stack.
-      class NoSuchObjectError < Exception; end
+      class NoSuchObjectError < CircuitError; end
 
       include Enumerable
 

@@ -6,7 +6,7 @@ module Circuit
     autoload :Stack, 'circuit/behavior/stack'
 
     # Raised in any case a rewrite fails.
-    class RewriteException < Exception ; end
+    class RewriteError < CircuitError ; end
 
     extend ActiveSupport::Concern
 

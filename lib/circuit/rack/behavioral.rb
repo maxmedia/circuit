@@ -42,7 +42,7 @@ module Circuit
         behavior.rewrite! request
         ::Circuit.logger.info("[CIRCUIT] Rerouting: '#{request.original_path}'->'#{request.path}'")
         :rewritten
-      rescue ::Circuit::Behavior::RewriteException => ex
+      rescue ::Circuit::Behavior::RewriteError => ex
         ::Circuit.logger.error("[CIRCUIT] Error: %p"%[ex])
         return :rewrite_failed
       end
