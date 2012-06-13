@@ -1,9 +1,9 @@
 module Circuit
   module Storage
-    module Trees
-      autoload :Model,        'circuit/storage/trees/model'
-      autoload :MemoryStore,  'circuit/storage/trees/memory_store'
-      autoload :MongoidStore, 'circuit/storage/trees/mongoid_store'
+    module Nodes
+      autoload :Model,        'circuit/storage/nodes/model'
+      autoload :MemoryStore,  'circuit/storage/nodes/memory_store'
+      autoload :MongoidStore, 'circuit/storage/nodes/mongoid_store'
 
       extend Circuit::Storage
 

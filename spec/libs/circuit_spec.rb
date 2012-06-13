@@ -81,59 +81,59 @@ describe Circuit do
     context "set with no Site class" do
       it do
         expect { Circuit.set_site_store Object }.
-          to raise_error(ArgumentError, "Cannot determine a Site or Tree class for storage type: Object")
+          to raise_error(ArgumentError, "Cannot determine a Site or Node class for storage type: Object")
       end
     end
   end
 
-  context "tree store" do
-    let(:klass) { $mongo_tests ? Circuit::Storage::Trees::MongoidStore : Circuit::Storage::Trees::MemoryStore }
+  context "node store" do
+    let(:klass) { $mongo_tests ? Circuit::Storage::Nodes::MongoidStore : Circuit::Storage::Nodes::MemoryStore }
 
     context "get" do
       let(:mock_instance) { mock() }
-      before { Circuit::Storage::Trees.expects(:instance).returns(mock_instance) }
-      after { Circuit::Storage::Trees.unstub(:instance) }
-      it { Circuit.tree_store.should == mock_instance}
+      before { Circuit::Storage::Nodes.expects(:instance).returns(mock_instance) }
+      after { Circuit::Storage::Nodes.unstub(:instance) }
+      it { Circuit.node_store.should == mock_instance}
     end
 
     context "not set" do
       it do
-        expect { Circuit.tree_store }.
+        expect { Circuit.node_store }.
           to raise_error(Circuit::Storage::InstanceUndefinedError, "Storage instance is undefined.")
       end
-      it { expect { Circuit::Tree }.to raise_error(NameError) }
+      it { expect { Circuit::Node }.to raise_error(NameError) }
     end
 
     context "set by class" do
-      before { Circuit.set_tree_store klass }
-      it { Circuit.tree_store.should be_instance_of klass }
-      it { Circuit::Tree.should == klass.const_get(:Tree) }
+      before { Circuit.set_node_store klass }
+      it { Circuit.node_store.should be_instance_of klass }
+      it { Circuit::Node.should == klass.const_get(:Node) }
     end
 
     context "set by instance" do
       let(:instance) { klass.new }
-      before { Circuit.set_tree_store instance }
-      it { Circuit.tree_store.should == instance }
-      it { Circuit::Tree.should == klass.const_get(:Tree) }
+      before { Circuit.set_node_store instance }
+      it { Circuit.node_store.should == instance }
+      it { Circuit::Node.should == klass.const_get(:Node) }
     end
 
     context "set by symbol" do
-      before { Circuit.set_tree_store($mongo_tests ? :mongoid_store : :memory_store) }
-      it { Circuit.tree_store.should be_instance_of klass }
-      it { Circuit::Tree.should == klass.const_get(:Tree) }
+      before { Circuit.set_node_store($mongo_tests ? :mongoid_store : :memory_store) }
+      it { Circuit.node_store.should be_instance_of klass }
+      it { Circuit::Node.should == klass.const_get(:Node) }
     end
 
     context "set wrong type" do
       it do
-        expect { Circuit.set_tree_store Object.new }.
+        expect { Circuit.set_node_store Object.new }.
           to raise_error(ArgumentError, "Unexpected type for storage instance: Object")
       end
     end
 
-    context "set with no Tree class" do
+    context "set with no Node class" do
       it do
-        expect { Circuit.set_tree_store Object }.
-          to raise_error(ArgumentError, "Cannot determine a Site or Tree class for storage type: Object")
+        expect { Circuit.set_node_store Object }.
+          to raise_error(ArgumentError, "Cannot determine a Site or Node class for storage type: Object")
       end
     end
   end

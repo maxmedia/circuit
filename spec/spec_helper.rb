@@ -67,7 +67,7 @@ RSpec.configure do |config|
 
   config.after(:each) do
     Circuit::Storage::Sites::MemoryStore::Site.all.clear
-    Circuit::Storage::Trees::MemoryStore::Tree.all.clear
+    Circuit::Storage::Nodes::MemoryStore::Node.all.clear
   end
 
   config.before(:each) { stub_time! }

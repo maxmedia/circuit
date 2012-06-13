@@ -10,57 +10,57 @@ describe Circuit::Storage do
     end
   end
 
-  context "undefined tree store" do
+  context "undefined node store" do
     it do
-      expect { Circuit.tree_store }.
+      expect { Circuit.node_store }.
         to raise_error(Circuit::Storage::InstanceUndefinedError, "Storage instance is undefined.")
     end
   end
 
-  describe Circuit::Storage::Trees do
+  describe Circuit::Storage::Nodes do
     include SpecHelpers::BaseModels
 
-    describe Circuit::Storage::Trees::BaseStore do
+    describe Circuit::Storage::Nodes::BaseStore do
       context "unimplemented store" do
-        class Circuit::Storage::Trees::UnimplementedStore < Circuit::Storage::Trees::BaseStore
+        class Circuit::Storage::Nodes::UnimplementedStore < Circuit::Storage::Nodes::BaseStore
         end
 
-        subject { Circuit::Storage::Trees::UnimplementedStore.new }
+        subject { Circuit::Storage::Nodes::UnimplementedStore.new }
 
         it do
           expect { subject.get("foo", "bar") }.
-            to raise_error(Circuit::Storage::Trees::UnimplementedError, "Circuit::Storage::Trees::UnimplementedStore#get not implemented.")
+            to raise_error(Circuit::Storage::Nodes::UnimplementedError, "Circuit::Storage::Nodes::UnimplementedStore#get not implemented.")
         end
 
         it do
           expect { subject.get!("foo", "bar") }.
-            to raise_error(Circuit::Storage::Trees::UnimplementedError, "Circuit::Storage::Trees::UnimplementedStore#get not implemented.")
+            to raise_error(Circuit::Storage::Nodes::UnimplementedError, "Circuit::Storage::Nodes::UnimplementedStore#get not implemented.")
         end
       end
 
       context "empty store" do
-        class Circuit::Storage::Trees::EmptyStore < Circuit::Storage::Trees::BaseStore
+        class Circuit::Storage::Nodes::EmptyStore < Circuit::Storage::Nodes::BaseStore
           def get(site, path) nil; end
         end
 
-        subject { Circuit::Storage::Trees::EmptyStore.new }
+        subject { Circuit::Storage::Nodes::EmptyStore.new }
 
         it { subject.get("foo", "bar").should be_nil }
 
         it do
           expect { subject.get!("foo", "bar").
-            to raise_error(Circuit::Storage::Trees::NotFoundError, "Host not found")
+            to raise_error(Circuit::Storage::Nodes::NotFoundError, "Host not found")
           }
         end
       end
     end
 
-    describe Circuit::Storage::Trees::MemoryStore do
+    describe Circuit::Storage::Nodes::MemoryStore do
       use_storage :memory_store
       let!(:store) { :memory_store }
-      include_examples "tree store"
+      include_examples "node store"
 
-      describe Circuit::Storage::Trees::MemoryStore::Tree do
+      describe Circuit::Storage::Nodes::MemoryStore::Node do
         subject { child }
         it { should have_attribute(:slug) }
         it { should have_attribute(:behavior_klass) }
@@ -70,10 +70,10 @@ describe Circuit::Storage do
       end
     end
 
-    describe "Circuit::Storage::Trees::MongoidStore", :if => $mongo_tests do
+    describe "Circuit::Storage::Nodes::MongoidStore", :if => $mongo_tests do
       use_storage :mongoid_store
       let!(:store) { :mongoid_store }
-      include_examples "tree store"
+      include_examples "node store"
     end
   end
 

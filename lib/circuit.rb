@@ -39,24 +39,24 @@ module Circuit
     Storage::Sites.set_instance(*args)
   end
 
-  # @return [Storage::Trees::BaseStore] the Tree storage instance
-  def self.tree_store() Storage::Trees.instance; end
+  # @return [Storage::Nodes::BaseStore] the Node storage instance
+  def self.node_store() Storage::Nodes.instance; end
 
-  # @overload set_tree_store(instance)
-  #   @param [Storage::Trees::BaseStore] instance for the Tree store
-  #   @example Set the Tree store
-  #     Circuit.set_tree_store Circuit::Storage::Trees::MongoidStore.new
-  # @overload set_tree_store(klass)
-  #   @param [Class] klass to create instance for the Tree store
-  #   @example Set the Tree store
-  #     Circuit.set_tree_store Circuit::Storage::Trees::MongoidStore
-  # @overload set_tree_store(symbol)
-  #   @param [Symbol] symbol for a Tree store class under Circuit::Storage::Trees
-  #   @example Set the Tree store
-  #     Circuit.set_tree_store :mongoid_store
-  # @return [Storage::Trees::BaseStore] the Tree storage instance
-  def self.set_tree_store(*args)
-    Storage::Trees.set_instance(*args)
+  # @overload set_node_store(instance)
+  #   @param [Storage::Nodes::BaseStore] instance for the Node store
+  #   @example Set the Node store
+  #     Circuit.set_node_store Circuit::Storage::Nodes::MongoidStore.new
+  # @overload set_node_store(klass)
+  #   @param [Class] klass to create instance for the Node store
+  #   @example Set the Node store
+  #     Circuit.set_node_store Circuit::Storage::Nodes::MongoidStore
+  # @overload set_node_store(symbol)
+  #   @param [Symbol] symbol for a Node store class under Circuit::Storage::Nodes
+  #   @example Set the Node store
+  #     Circuit.set_node_store :mongoid_store
+  # @return [Storage::Nodes::BaseStore] the Node storage instance
+  def self.set_node_store(*args)
+    Storage::Nodes.set_instance(*args)
   end
 
   # Top-level error class for Circuit errorsr

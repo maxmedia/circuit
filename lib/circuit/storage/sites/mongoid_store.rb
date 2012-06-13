@@ -20,7 +20,7 @@ module Circuit
           field :host, type: String
           field :aliases, type: Array
 
-          has_one :route, class_name: "Circuit::Tree",
+          has_one :route, class_name: "Circuit::Node",
                           inverse_of: :site
         end
       end

@@ -27,7 +27,7 @@ module Circuit
       end
 
       def remap!(request)
-        route = ::Circuit.tree_store.get(request.site, request.path)
+        route = ::Circuit.node_store.get(request.site, request.path)
         return :not_found if route.blank?
 
         request.route = route.take_while { |segment| remapable_behavior?(segment.behavior) }

@@ -1,8 +1,8 @@
 require "active_support/core_ext/string/inflections"
 
-shared_examples "tree store" do
-  subject { Circuit.tree_store }
-  it { should be_instance_of(Circuit::Storage::Trees.const_get(store.to_s.classify)) }
+shared_examples "node store" do
+  subject { Circuit.node_store }
+  it { should be_instance_of(Circuit::Storage::Nodes.const_get(store.to_s.classify)) }
 
   context "get root" do
     before { root }
@@ -22,11 +22,11 @@ shared_examples "tree store" do
     it { subject.get(site, child.path+"/foobar").should be_nil }
     it do
       expect { subject.get!(site, child.path+"/foobar") }.
-        to raise_error(Circuit::Storage::Trees::NotFoundError, "Path not found")
+        to raise_error(Circuit::Storage::Nodes::NotFoundError, "Path not found")
     end
   end
 
-  describe Circuit::Tree do
+  describe Circuit::Node do
     subject { child }
 
     context "has slug" do

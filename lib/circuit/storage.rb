@@ -4,7 +4,7 @@ module Circuit
   module Storage
     autoload :MemoryModel,  'circuit/storage/memory_model'
     autoload :Sites,        'circuit/storage/sites'
-    autoload :Trees,        'circuit/storage/trees'
+    autoload :Nodes,        'circuit/storage/nodes'
 
     class InstanceUndefinedError < CircuitError
       def initialize(msg="Storage instance is undefined.")
@@ -20,7 +20,7 @@ module Circuit
       klass = nil
 
       case args.first
-      when Trees::BaseStore, Sites::BaseStore
+      when Nodes::BaseStore, Sites::BaseStore
         @instance = args.first
       when Class
         klass = args.first
@@ -37,13 +37,13 @@ module Circuit
       end
 
       case @instance
-      when Trees::BaseStore
-        ::Circuit.const_set(:Tree, @instance.class.const_get(:Tree))
+      when Nodes::BaseStore
+        ::Circuit.const_set(:Node, @instance.class.const_get(:Node))
       when Sites::BaseStore
         ::Circuit.const_set(:Site, @instance.class.const_get(:Site))
       else
         bad_instance = @instance; @instance = nil
-        raise ArgumentError, "Cannot determine a Site or Tree class for storage type: %s"%[bad_instance.class]
+        raise ArgumentError, "Cannot determine a Site or Node class for storage type: %s"%[bad_instance.class]
       end
 
       @instance

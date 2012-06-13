@@ -19,7 +19,7 @@ describe Behaviors::MountByFragmentOrRemap do
 
   context 'GET /test' do
     before do
-      Circuit::Tree.any_instance.expects(:find_child_by_fragment).
+      Circuit::Node.any_instance.expects(:find_child_by_fragment).
         with("test").at_least_once.returns(route_lookup)
 
       get "/test"
@@ -28,7 +28,7 @@ describe Behaviors::MountByFragmentOrRemap do
     subject { last_response.body }
 
     context "when found" do
-      let(:route_lookup) { Circuit::Tree.make behavior: ::Behaviors::RenderOK }
+      let(:route_lookup) { Circuit::Node.make behavior: ::Behaviors::RenderOK }
       it { should == "ok" }
     end
 

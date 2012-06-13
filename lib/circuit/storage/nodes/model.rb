@@ -4,7 +4,7 @@ require 'circuit/validators'
 
 module Circuit
   module Storage
-    module Trees
+    module Nodes
       module Model
         extend ActiveSupport::Concern
 

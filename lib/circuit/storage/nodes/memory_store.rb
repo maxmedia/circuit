@@ -1,6 +1,6 @@
 module Circuit
   module Storage
-    module Trees
+    module Nodes
       class MemoryStore < BaseStore
         def get(site, path)
           root = site.route
@@ -8,12 +8,12 @@ module Circuit
           find_nodes_for_path(root, path)
         end
 
-        class Tree
+        class Node
           include Circuit::Storage::MemoryModel
           setup_attributes :slug, :behavior_klass, :site, :parent, :children
 
-          include Circuit::Storage::Trees::Model
-          include Circuit::Storage::Trees::Model::Validations
+          include Circuit::Storage::Nodes::Model
+          include Circuit::Storage::Nodes::Model::Validations
 
           def initialize(opts={})
             memory_model_setup
