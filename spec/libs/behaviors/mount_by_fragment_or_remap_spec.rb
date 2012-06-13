@@ -4,16 +4,8 @@ describe Behaviors::MountByFragmentOrRemap do
   include Rack::Test::Methods
   include SpecHelpers::MultiSiteHelper
 
-  def behavior
-    Behaviors::MountByFragmentOrRemap
-  end
-
-  def site
-    setup_site!('www.example.org', behavior)
-  end
-
   def app
-    stub_app_with_circuit_site site
+    stub_app_with_circuit_site setup_site!(root.site, Behaviors::MountByFragmentOrRemap)
   end
 
   context 'GET /' do
@@ -27,7 +19,7 @@ describe Behaviors::MountByFragmentOrRemap do
 
   context 'GET /test' do
     before do
-      Site.any_instance.expects(:find_child_by_fragment).
+      Circuit::Tree.any_instance.expects(:find_child_by_fragment).
         with("test").at_least_once.returns(route_lookup)
 
       get "/test"
@@ -36,7 +28,7 @@ describe Behaviors::MountByFragmentOrRemap do
     subject { last_response.body }
 
     context "when found" do
-      let(:route_lookup) { Route.make behavior: ::Behaviors::RenderOK }
+      let(:route_lookup) { Circuit::Tree.make behavior: ::Behaviors::RenderOK }
       it { should == "ok" }
     end
 

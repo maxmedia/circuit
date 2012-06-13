@@ -19,7 +19,7 @@ describe Circuit::Rack::Behavioral do
   end
 
   def app
-    stub_app_with_circuit_site setup_site!('www.example.org', RenderMyMiddlewareBehavior)
+    stub_app_with_circuit_site setup_site!(root.site, RenderMyMiddlewareBehavior)
   end
 
   context 'GET /' do
@@ -31,34 +31,51 @@ describe Circuit::Rack::Behavioral do
     end
   end
 
-  context 'rewrite_env_with_behavior!' do
-    let(:env)        { { 'PATH_INFO' => '/' } }
+  context "GET / without site" do
+    def no_site_middleware
+      (Class.new do
+        def initialize(app, site=nil) @app = app; end
+        def call(env) @app.call(env); end
+      end)
+    end
+
+    def app
+      stub_app_with_circuit_site nil, no_site_middleware
+    end
+
+    it do
+      expect { get "/" }.to raise_error(Circuit::Rack::MissingSiteError, "Rack variable rack.circuit.site is missing")
+    end
+  end
+
+  context 'rewrite_with_behavior!' do
+    let(:request)    { ::Rack::Request.new(Rack::MockRequest.env_for("/")) }
     let(:behavior)   { mock() }
     let(:behavioral) { Circuit::Rack::Behavioral.new('_') }
-    subject { behavioral.rewrite_env_with_behavior! behavior, env }
+    subject { behavioral.rewrite_with_behavior! behavior, request }
 
-    context ' when unset' do
+    context 'when unset' do
       before do
-        behavior.expects(:respond_to?).with(:rewrite_env_as!).once.returns(false)
-        behavior.expects(:rewrite_env_as!).never
+        behavior.expects(:respond_to?).with(:rewrite!).once.returns(false)
+        behavior.expects(:rewrite!).never
       end
 
       it { should == :rewrite_not_configured }
     end
 
-    context 'rewrite_env_with_behavior!' do
+    context 'rewrite_with_behavior!' do
       before do
-        behavior.expects(:respond_to?).with(:rewrite_env_as!).once.returns(true)
-        behavior.expects(:rewrite_env_as!).with(env).once
+        behavior.expects(:respond_to?).with(:rewrite!).once.returns(true)
+        behavior.expects(:rewrite!).with(request).once
       end
 
       it { should == :rewritten }
     end
 
-    context 'when raised ::Circuit::Behavior::RewriteException' do
+    context 'when raised ::Circuit::Behavior::RewriteError' do
       before do
-        behavior.expects(:respond_to?).with(:rewrite_env_as!).once.returns(true)
-        behavior.expects(:rewrite_env_as!).raises(::Circuit::Behavior::RewriteException)
+        behavior.expects(:respond_to?).with(:rewrite!).once.returns(true)
+        behavior.expects(:rewrite!).raises(::Circuit::Behavior::RewriteError)
       end
 
       it { should == :rewrite_failed }
@@ -70,29 +87,19 @@ describe Circuit::Rack::Behavioral do
     class RewritePathInfoToFoobar
       include ::Circuit::Behavior
 
-      def self.rewrite_env_as!(env)
-        env['PATH_INFO'] = "/foobar"
+      def self.rewrite!(request)
+        request.path = "/foobar"
       end
     end
 
-    context 'GET /' do
-      def app
-        stub_app_with_circuit_site setup_site!('www.example.org', RewritePathInfoToFoobar)
-      end
-
-      context "example 1" do
-        get "/"
-        subject { last_response.body }
-        it { should == "downstream /foobar" }
-      end
-
-      context "example 2" do
-        get "/any-path-is-rewritten"
-        subject { last_response.body }
-        it { should == "downstream /foobar" }
-      end
-
+    def app
+      stub_app_with_circuit_site setup_site!(root.site, RewritePathInfoToFoobar)
     end
 
+    context "example 1" do
+      get "/"
+      subject { last_response.body }
+      it { should == "downstream /foobar" }
+    end
   end
 end

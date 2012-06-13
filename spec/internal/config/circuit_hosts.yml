@@ -1,8 +1,0 @@
-development:
-  default: localhost
-  127.0.0.1: 
-    to: localhost
-test:
-  default: www.example.org
-  127.0.0.1: 
-    to: www.example.org
