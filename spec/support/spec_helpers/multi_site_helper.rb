@@ -3,13 +3,12 @@ require 'active_support/concern'
 module SpecHelpers
   module MultiSiteHelper
     extend ActiveSupport::Concern
+    include BaseModels
 
-    included do
-
-    end
-
-    def setup_site!(domain='www.example.org', behavior=::Behaviors::RenderOK)
-      return ::Site.where(domain: domain).first || ::Site.make!(domain: domain, behavior: behavior)
+    def setup_site!(site, behavior)
+      site.route.behavior = behavior
+      site.route.save!
+      site
     end
 
     def stub_app_with_circuit_site(my_site, middleware_klass=set_site_middleware)
@@ -28,8 +27,9 @@ module SpecHelpers
         end
 
         def call(env)
-          env[Circuit::Rack::Behavioral::ENV_CURRENT_SITE] = @site
-          @app.call(env)
+          request = Rack::Request.new(env)
+          request.site = @site
+          @app.call(request.env)
         end
       end)
     end

@@ -1,70 +1,50 @@
 module Circuit
   module Rack
-    class Behavioral
-      ENV_SCRIPT_NAME     = 'rack.circuit.script_name'
-      ENV_PATH_INFO       = 'rack.circuit.path_info'
-      ENV_CURRENT_SITE    = 'rack.circuit.site'
-      ENV_CURRENT_ROUTE   = 'rack.circuit.current_route'
-      ENV_ROUTE_ANCESTORS = 'rack.circuit.route_ancestors'
+    class MissingSiteError < CircuitError; end
 
+    class Behavioral
       def initialize(app)
         @app = app
       end
 
       def call(env)
-        raise unless env[ENV_CURRENT_SITE]
+        request = ::Rack::Request.new(env)
 
-        setup_request!(env)
-        response = remap_by_fragment!(env)
-        return @app.call(env) if response == :not_found
+        unless request.site
+          raise MissingSiteError, "Rack variable %s is missing"%[::Rack::Request::ENV_SITE]
+        end
 
-        behavior = env[ENV_CURRENT_ROUTE].behavior
+        result = remap!(request)
+        return @app.call(request.env) if result == :not_found
 
-        response = rewrite_env_with_behavior! behavior, env
-        return @app.call(env) if response == :rewrite_failed
+        behavior = request.route.last.behavior
+        result = rewrite_with_behavior! behavior, request
+        return @app.call(request.env) if result == :rewrite_failed
 
         use = behavior.stack.to_a
         use = use.map { |middleware| proc { |app| middleware.new(app) } }
-        use.reverse.inject(@app) { |a,e| e[a] }.call(env)
+        use.reverse.inject(@app) { |a,e| e[a] }.call(request.env)
       end
 
-      def remap_by_fragment!(env)
-        behavior  = env[ENV_CURRENT_ROUTE].behavior
-        fragments = env[ENV_PATH_INFO].gsub(/^\//,'').split(/\/+/).compact
+      def remap!(request)
+        route = ::Circuit.tree_store.get(request.site, request.path)
+        return :not_found if route.blank?
 
-        return :route_determined unless remapable_behavior?(behavior)
-        return :route_determined if     fragments.empty?
-
-        next_fragment = fragments.shift
-        child_route = env[ENV_ROUTE_ANCESTORS].last.find_child_by_fragment(next_fragment)
-
-        return :not_found unless child_route
-
-        env[ENV_ROUTE_ANCESTORS] << child_route
-        env[ENV_CURRENT_ROUTE] = child_route
-
-        env[ENV_SCRIPT_NAME] << "/" << next_fragment
-        env[ENV_PATH_INFO] = "/" << fragments.join("/")
-
-        remap_by_fragment!(env)
+        request.route = route.take_while { |segment| remapable_behavior?(segment.behavior) }
+        request.route << route[request.route.length] if route[request.route.length]
+        request.route_path = request.route.last.path
+        return :route_determined
       end
 
-      def rewrite_env_with_behavior!(behavior, env)
-        return :rewrite_not_configured unless behavior.respond_to?(:rewrite_env_as!)
-        old_path = env["PATH_INFO"]
-        behavior.rewrite_env_as! env
-        Rails.logger.info("REROUTING: '#{old_path}'->'#{env['PATH_INFO']}'")
+      def rewrite_with_behavior!(behavior, request)
+        return :rewrite_not_configured unless behavior.respond_to?(:rewrite!)
+        request.original_path = request.path
+        behavior.rewrite! request
+        ::Circuit.logger.info("[CIRCUIT] Rerouting: '#{request.original_path}'->'#{request.path}'")
         :rewritten
-      rescue ::Circuit::Behavior::RewriteException => ex
-        Rails.logger.info("REROUTING: [ERROR] #{ex.inspect}")
+      rescue ::Circuit::Behavior::RewriteError => ex
+        ::Circuit.logger.error("[CIRCUIT] Error: %p"%[ex])
         return :rewrite_failed
-      end
-
-      def setup_request!(env)
-        env[ENV_PATH_INFO]       ||= env['PATH_INFO']
-        env[ENV_SCRIPT_NAME]     ||= env['SCRIPT_NAME']
-        env[ENV_CURRENT_ROUTE]   ||= env[ENV_CURRENT_SITE]
-        env[ENV_ROUTE_ANCESTORS] ||= [env[ENV_CURRENT_ROUTE]]
       end
 
       def remapable_behavior?(behavior)

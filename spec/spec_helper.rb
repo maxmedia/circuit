@@ -10,21 +10,28 @@ require 'bundler'
 require 'simplecov'
 SimpleCov.start
 
-Bundler.require :default, :development
+required_groups = [:default, :development]
+
+# Require gems and attempt to load mongo
+begin
+  Bundler.require *required_groups, :mongo
+rescue LoadError
+  Bundler.require *required_groups
+end
+# Determine if we want to run tests with mongo (i.e. whether mongo was loaded)
+$mongo_tests = !!Bundler.definition.requested_specs.detect {|s| s.name == "mongo"}
 
 require 'combustion'
 require 'capybara/rspec'
 
-# require 'simple_form'
 require 'machinist'
-require 'machinist/mongoid'
+require 'machinist/mongoid' if $mongo_tests
 
-Circuit.load_hosts! "spec/internal/config/circuit_hosts.yml"
-Mongoid.load!       "spec/internal/config/mongoid.yml"
+Mongoid.load! "spec/internal/config/mongoid.yml" if $mongo_tests
 
 Combustion.initialize! :action_controller, :action_view, :sprockets
 
-require 'rails/mongoid'
+require 'rails/mongoid' if $mongo_tests
 require 'rspec/rails'
 require 'capybara/rails'
 require 'rspec/rails/mocha'
@@ -37,23 +44,33 @@ Dir[File.expand_path("../support/**/*.rb", __FILE__)].each {|f|  require f}
 RSpec.configure do |config|
   config.mock_with :mocha
 
+  if $mongo_tests
+    config.include Mongoid::Matchers
+
+    config.after(:each) do
+      Mongoid.master.collections.select do |collection|
+        collection.name !~ /system/
+      end.each(&:drop)
+    end
+
+    # Clean up the database
+    require 'database_cleaner'
+    config.before(:suite) do
+      DatabaseCleaner.strategy = :truncation
+      DatabaseCleaner.orm = "mongoid"
+    end
+
+    config.before(:each) do
+      DatabaseCleaner.clean
+    end
+  end
+
   config.after(:each) do
-    Mongoid.master.collections.select do |collection|
-      collection.name !~ /system/
-    end.each(&:drop)
+    Circuit::Storage::Sites::MemoryStore::Site.all.clear
+    Circuit::Storage::Trees::MemoryStore::Tree.all.clear
   end
 
-  # Clean up the database
-  require 'database_cleaner'
-  config.before(:suite) do
-    DatabaseCleaner.strategy = :truncation
-    DatabaseCleaner.orm = "mongoid"
-  end
-
-  config.before(:each) do
-    DatabaseCleaner.clean
-    stub_time!
-  end
+  config.before(:each) { stub_time! }
 end
 
 # freeze time, so time tests appear to run without time passing.

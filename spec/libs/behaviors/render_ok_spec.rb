@@ -5,7 +5,7 @@ describe Behaviors::RenderOK do
   include SpecHelpers::MultiSiteHelper
 
   def app
-    stub_app_with_circuit_site setup_site!('www.example.org', Behaviors::RenderOK)
+    stub_app_with_circuit_site setup_site!(root.site, Behaviors::RenderOK)
   end
 
   context 'GET /' do

@@ -3,6 +3,8 @@ Gemfile.lock
 
 /.bundle
 /pkg
+doc
+.yardoc
 *.gem
 pkg/*
 coverage
