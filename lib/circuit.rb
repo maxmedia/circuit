@@ -71,6 +71,6 @@ end
 
 module Behaviors
   autoload :Forward,                'behaviors/forward'
-  autoload :MountByFragmentOrRemap, 'behaviors/mount_by_fragment_or_remap'
+  autoload :MountBySegmentOrRemap, 'behaviors/mount_by_segment_or_remap'
   autoload :RenderOK,               'behaviors/render_ok'
 end

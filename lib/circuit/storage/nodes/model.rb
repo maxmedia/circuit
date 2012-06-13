@@ -32,7 +32,7 @@ module Circuit
           self.behavior_klass = klass.to_s
         end
 
-        def find_child_by_fragment(segment)
+        def find_child_by_segment(segment)
           self.children.detect {|c| c.slug == segment}
         end
 

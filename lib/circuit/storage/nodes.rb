@@ -23,8 +23,8 @@ module Circuit
 
         def find_nodes_for_path(root, path)
           nodes = [root]
-          ::Rack::Request.path_segments(path).each do |fragment|
-            node = nodes.last.find_child_by_fragment(fragment)
+          ::Rack::Request.path_segments(path).each do |segment|
+            node = nodes.last.find_child_by_segment(segment)
             return nil if node.nil?
             nodes << node
           end

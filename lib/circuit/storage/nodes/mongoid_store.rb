@@ -26,8 +26,8 @@ module Circuit
           belongs_to :site, class_name: "Circuit::Site",
                             inverse_of: :route
 
-          def find_child_by_fragment(fragment)
-            self.children.where(slug: fragment).first
+          def find_child_by_segment(segment)
+            self.children.where(slug: segment).first
           end
         end
       end

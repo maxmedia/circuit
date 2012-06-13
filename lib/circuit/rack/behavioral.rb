@@ -48,7 +48,7 @@ module Circuit
       end
 
       def remapable_behavior?(behavior)
-        behavior.respond_to?(:remap_by_fragment) && behavior.remap_by_fragment
+        behavior.respond_to?(:remap_by_segment) && behavior.remap_by_segment
       end
     end
   end

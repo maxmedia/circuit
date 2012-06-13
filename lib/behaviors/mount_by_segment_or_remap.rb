@@ -1,8 +1,8 @@
 module Behaviors
-  class MountByFragmentOrRemap
+  class MountBySegmentOrRemap
     include ::Circuit::Behavior
 
-    def self.remap_by_fragment
+    def self.remap_by_segment
       true
     end
 
