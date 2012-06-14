@@ -1,3 +1,5 @@
+**This README is based on features planned to be included in the 0.2.0 release of circuit.**
+
 **Circuit is in heavy development and reorganization at the moment.  We are planning to have this API and change
 stabilized in the 0.4.0 release.  0.4.0 and future releases will include deprecation warning and a 0.4.0-stable 
 branch in github.**
