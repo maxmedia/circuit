@@ -2,11 +2,14 @@ require 'rack/builder'
 
 module Circuit
   module Rack
+    # Extensions to Rack::Builder
     module BuilderExt
+      # @return [Boolean] true if a default app is set
       def app?
         !!@run
       end
 
+      # Duplicates the `@use` Array and `@map` Hash instance variables
       def initialize_copy(other)
         @use = other.instance_variable_get(:@use).dup
         unless other.instance_variable_get(:@map).nil?
@@ -15,9 +18,13 @@ module Circuit
       end
     end
 
+    # A Rack::Builder variation that does not require a fully-compliant rackup
+    # file; specifically that a default app (`run` directive) is not required.
     class Builder < ::Rack::Builder
       include BuilderExt
 
+      # Parses the rackup (or circuit-rackup .cru) file.
+      # @return [Circuit::Rack::Builder] the builder
       def self.parse_file(config, opts = ::Rack::Server::Options.new)
         # allow for objects that are String-like but don't respond to =~ 
         # (e.g. Pathname)

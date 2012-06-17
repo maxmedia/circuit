@@ -1,5 +1,6 @@
 module Circuit
   module Rack
+    # Finds the Circuit::Site for the request.  Returns a 404 if the site is not found.
     class MultiSite
       def initialize(app)
         @app = app

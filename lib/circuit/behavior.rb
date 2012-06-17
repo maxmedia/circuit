@@ -10,6 +10,8 @@ module Circuit
     # Raised when the path for a rackup file is indeterminate.
     class RackupPathError < Circuit::CircuitError; end
 
+    # @param [String] str name of Behavior constant to get
+    # @return [Behavior] Behavior constant
     def self.get(str)
       str.classify.constantize
     rescue NameError
@@ -27,6 +29,7 @@ module Circuit
     end
 
     module ClassMethods
+      # Clones the builder into the subclass when using inheritance
       def inherited(subclass)
         subclass.builder = @builder.clone
       end

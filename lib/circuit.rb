@@ -20,10 +20,12 @@ module Circuit
     @logger ||= ::Logger.new($stdout)
   end
 
+  # @param [Pathname,String] pathname directory for behaviors, .cru, and .ru files
   def self.cru_path=(pathname)
     @cru_path = (pathname.is_a?(Pathname) ? pathname : Pathname.new(pathname.to_s))
   end
 
+  # @return [Pathname] pathname directory for behaviors, .cru, and .ru files
   def self.cru_path() @cru_path; end
 
   # @return [Storage::Sites::BaseStore] the Site storage instance

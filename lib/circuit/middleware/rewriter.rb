@@ -3,12 +3,27 @@ module Circuit
     # Raise if rewriting fails.
     class RewriteError < CircuitError ; end
 
+    # Rewriter middleware
+    # @example Use the middleware (in rackup)
+    #   use Rewriter do |script_name, path_info|
+    #         ["/pages", script_name+path_info]
+    #       end
+    # @example Use the middleware with Rack::Request object (in rackup)
+    #   use Rewriter do |request|
+    #         ["/site/#{request.site.id}"+request.script_name, request.path_info]
+    #       end
+    # @see http://rubydoc.info/gems/rack/Rack/Request Rack::Request documentation
     class Rewriter
+      # @param [#call] app Rack app
+      # @yield [script_name, path_info] `SCRIPT_NAME` and `PATH_INF`O values
+      # @yield [Request] `Rack::Request` object
+      # @yieldreturn [Array<String>] new `script_name` and `path_info`
       def initialize(app, &block)
         @app = app
         @block = block
       end
 
+      # Executes the rewrite
       def call(env)
         begin
           request = ::Rack::Request.new(env)

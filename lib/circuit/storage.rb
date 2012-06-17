@@ -6,16 +6,38 @@ module Circuit
     autoload :Sites,        'circuit/storage/sites'
     autoload :Nodes,        'circuit/storage/nodes'
 
+    # Raised if a storage instance is undefined.
     class InstanceUndefinedError < CircuitError
       def initialize(msg="Storage instance is undefined.")
         super(msg)
       end
     end
 
+    # @raise InstanceUndefinedError if the instance isn't defined
+    # @return [Circuit::Storage::Nodes::BaseStore,Circuit::Storage::Sites::BaseStore]
+    #         the storage instance
     def instance
       @instance || raise(InstanceUndefinedError)
     end
 
+    # Set the storage instance and alias the `Node` or `Site` model under
+    # `Circuit` as `Circuit::Node` or `Circuit::Site`.
+    #
+    # @raise ArgumentError if the storage instance or the `Site` or `Node` 
+    #                      model cannot be determined
+    # @overload set_instance(instance)
+    #   @param [Circuit::Storage::Nodes::BaseStore,Circuit::Storage::Sites::BaseStore]
+    #          instance storage instance
+    #   @return [Circuit::Storage::Nodes::BaseStore,Circuit::Storage::Sites::BaseStore]
+    #           storage instance
+    # @overload set_instance(klass_or_name, *args)
+    #   @param [Class,String,Symbol] klass_or_name class or name of class 
+    #                                (under Circuit::Storage::Nodes or 
+    #                                Circuit::Storage::Sites) for storage 
+    #                                instance
+    #   @param [Array] args any arguments to instantiate the storage instance
+    #   @return [Circuit::Storage::Nodes::BaseStore,Circuit::Storage::Sites::BaseStore]
+    #           storage instance
     def set_instance(*args)
       klass = nil
 

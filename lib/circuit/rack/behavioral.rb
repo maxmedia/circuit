@@ -1,7 +1,10 @@
 module Circuit
   module Rack
+    # Raised if the `rack.circuit.site` rack variable is not defined (or `nil`)
     class MissingSiteError < CircuitError; end
 
+    # Finds the route (Array of Nodes) for the request, and executes the 
+    # route's behavior.
     class Behavioral
       def initialize(app)
         @app = app
@@ -19,6 +22,8 @@ module Circuit
           builder.run(@app) unless builder.app?
         end.call(env)
       end
+
+    private
 
       def remap(request)
         route = ::Circuit.node_store.get(request.site, request.path)
