@@ -22,13 +22,17 @@ module Circuit
         protected
 
         def find_nodes_for_path(root, path)
-          nodes = [root]
-          ::Rack::Request.path_segments(path).each do |segment|
-            node = nodes.last.find_child_by_segment(segment)
-            return nil if node.nil?
-            nodes << node
+          raise(NotFoundError, "Root path not found") if root.nil?
+          [root].tap do |result|
+            ::Rack::Request.path_segments(path).each do |segment|
+              next if segment.blank?
+              if node = result.last.find_child_by_segment(segment)
+                result << node
+              else
+                break
+              end
+            end
           end
-          nodes
         end
       end
     end

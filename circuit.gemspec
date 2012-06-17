@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = ">= 1.9.2"
 
+  s.add_runtime_dependency "rack",           "~> 1.3"
   s.add_runtime_dependency "activesupport",  "~> 3.1"
   s.add_runtime_dependency "activemodel",    "~> 3.1"
   # see Gemfile for development dependencies

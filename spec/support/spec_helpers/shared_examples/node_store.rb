@@ -9,6 +9,13 @@ shared_examples "node store" do
     it { subject.get(site, "/").should == [root] }
   end
 
+  context "get missing root" do
+    it do
+      expect { subject.get!(dup_site_1, "/") }.
+        to raise_error(Circuit::Storage::Nodes::NotFoundError, "Path not found")
+    end
+  end
+
   context "get nodes" do
     # before { great_grandchild }
     it do
@@ -19,11 +26,10 @@ shared_examples "node store" do
 
   context "get missing route" do
     before { child }
-    it { subject.get(site, child.path+"/foobar").should be_nil }
-    it do
-      expect { subject.get!(site, child.path+"/foobar") }.
-        to raise_error(Circuit::Storage::Nodes::NotFoundError, "Path not found")
-    end
+    it { subject.get(site, child.path+"/foobar").
+           should == [root, child] }
+    it { subject.get!(site, child.path+"/foobar").
+           should == [root, child] }
   end
 
   describe Circuit::Node do
@@ -53,9 +59,14 @@ shared_examples "node store" do
       it { subject.behavior.should == subject.behavior_klass.constantize }
     end
 
-    context "behavior_klass is settable by behavior=" do
-      before { subject.behavior = Behaviors::Forward }
-      it { subject.behavior_klass.should == "Behaviors::Forward" }
+    context "behavior_klass is settable by behavior= with module" do
+      before { subject.behavior = ChangePath }
+      it { subject.behavior_klass.should == "ChangePath" }
+    end
+
+    context "behavior_klass is settable by behavior= with cru" do
+      before { subject.behavior = Circuit::Behavior.get("Redirect") }
+      it { subject.behavior_klass.should == "Redirect" }
     end
 
     context "root has a site, slug is nil" do

@@ -5,9 +5,9 @@ module Circuit
     module Nodes
       class MongoidStore < BaseStore
         def get(site, path)
-          root = site.route
-          return nil if root.nil?
-          find_nodes_for_path(root, path)
+          find_nodes_for_path(site.route, path)
+        rescue NotFoundError
+          return nil
         end
 
         class Node

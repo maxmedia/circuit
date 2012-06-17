@@ -13,8 +13,8 @@ module CircuitBlueprints
 
     if Circuit::Node.blueprint.nil?
       Circuit::Node.blueprint do
-        slug      { Faker::Lorem.words(rand(3) + 2).join('-') }
-        behavior  { Behaviors::MountBySegmentOrRemap }
+        slug            { Faker::Lorem.words(rand(3) + 2).join('-') }
+        behavior_klass  { "RenderOk" }
       end
     end
   end

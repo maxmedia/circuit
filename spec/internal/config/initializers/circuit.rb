@@ -5,6 +5,3 @@ else
   Circuit.set_site_store :memory_store
   Circuit.set_node_store :memory_store
 end
-
-$logger_io = StringIO.new
-Circuit.logger = ::Logger.new($logger_io)

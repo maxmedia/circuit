@@ -25,7 +25,7 @@ module Circuit
 
         def behavior
           return nil if self.behavior_klass.blank?
-          behavior_klass.constantize
+          Behavior.get(behavior_klass)
         end
 
         def behavior=(klass)

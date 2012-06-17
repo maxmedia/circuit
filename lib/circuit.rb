@@ -5,9 +5,10 @@ require 'logger'
 require 'circuit/version'
 
 module Circuit
+  autoload :Middleware, 'circuit/middleware'
+  autoload :Rack,       'circuit/rack'
   autoload :Behavior,   'circuit/behavior'
   autoload :Storage,    'circuit/storage'
-  autoload :Rack,       'circuit/rack'
 
   # @param [Logger] logger for Circuit
   def self.logger=(logger)
@@ -18,6 +19,12 @@ module Circuit
   def self.logger
     @logger ||= ::Logger.new($stdout)
   end
+
+  def self.cru_path=(pathname)
+    @cru_path = (pathname.is_a?(Pathname) ? pathname : Pathname.new(pathname.to_s))
+  end
+
+  def self.cru_path() @cru_path; end
 
   # @return [Storage::Sites::BaseStore] the Site storage instance
   def self.site_store() Storage::Sites.instance; end
@@ -67,10 +74,4 @@ module Circuit
     ActiveModel::VERSION::MAJOR == 3 and
     ActiveModel::VERSION::MINOR == 1
   end
-end
-
-module Behaviors
-  autoload :Forward,                'behaviors/forward'
-  autoload :MountBySegmentOrRemap, 'behaviors/mount_by_segment_or_remap'
-  autoload :RenderOK,               'behaviors/render_ok'
 end

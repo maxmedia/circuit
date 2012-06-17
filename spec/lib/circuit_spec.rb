@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'stringio'
 
 describe Circuit do
-  include SpecHelpers::LoggerCleaner
+  include SpecHelpers::LoggerHelpers
   include SpecHelpers::StoresCleaner
 
   context 'object' do
@@ -17,20 +17,19 @@ describe Circuit do
     end
 
     context "set" do
+      before &:clean_logger!
       let(:new_logger) { ::Logger.new(StringIO.new) }
       before { Circuit.logger = new_logger }
-      it { Circuit.logger.should == new_logger }
+      subject { Circuit.logger }
+      it { should == new_logger }
     end
 
     context "change" do
       let(:new_logger) { ::Logger.new(StringIO.new) }
-      before do
-        @default_logger = Circuit.logger
-        Circuit.logger = new_logger
-      end
-      it { @default_logger.should_not == new_logger}
-      it { Circuit.logger.should == new_logger }
-      it { Circuit.logger.should_not == @default_logger }
+      before { Circuit.logger = new_logger }
+      subject { Circuit.logger }
+      it { should == new_logger }
+      it { should_not == default_logger }
     end
   end
 
