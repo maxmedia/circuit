@@ -70,10 +70,4 @@ module Circuit
 
   # Top-level error class for Circuit errorsr
   class CircuitError < StandardError; end
-
-  # @return [true,false] true if running with ActiveModel 3.1
-  def self.active_model_31?
-    ActiveModel::VERSION::MAJOR == 3 and
-    ActiveModel::VERSION::MINOR == 1
-  end
 end

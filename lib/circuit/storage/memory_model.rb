@@ -21,7 +21,6 @@ module Circuit
         def setup_attributes(*attrs)
           attribute_method_suffix '?'
           attribute_method_suffix '='
-          attribute_method_suffix '' if Circuit.active_model_31?
           define_attribute_methods attrs.collect(&:to_sym)
         end
       end
