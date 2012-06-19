@@ -1,7 +1,5 @@
-unless Rack::Builder.private_instance_methods.collect(&:to_sym).include?(:generate_map)
-  # This means we have Rack 1.3.x loaded, and we need to load 1.4.x's Rack::Builder
-  Circuit.override_rack_builder
-end
+require 'rack/server'
+require 'rack/builder'
 
 module Circuit
   module Rack
