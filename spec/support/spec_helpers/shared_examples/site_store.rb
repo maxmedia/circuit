@@ -1,4 +1,4 @@
-require "active_support/core_ext/string/inflections"
+require "active_support/inflector"
 
 shared_examples "site store" do
   subject { Circuit.site_store }

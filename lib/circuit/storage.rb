@@ -1,4 +1,4 @@
-require 'active_support/core_ext/string/inflections'
+require 'active_support/inflector'
 
 module Circuit
   module Storage
