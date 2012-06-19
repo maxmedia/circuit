@@ -8,7 +8,7 @@ describe Circuit::Rack::Builder do
   end
 
   context "with an app" do
-    subject { Circuit::Rack::Builder.new(->(env) {[200, {}, %w[OK]]}) }
+    subject { Circuit::Rack::Builder.new(lambda { |env| [200, {}, %w[OK]]}) }
     it { should respond_to(:app?) }
     it { subject.app?.should be_true }
   end
@@ -80,7 +80,7 @@ describe ::Rack::Builder do
   end
 
   context "with an app" do
-    subject { ::Rack::Builder.new(->(env) {[200, {}, %w[OK]]}) }
+    subject { ::Rack::Builder.new(lambda { |env| [200, {}, %w[OK]]}) }
     it { should respond_to(:app?) }
     it { subject.app?.should be_true }
   end

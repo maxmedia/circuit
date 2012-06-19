@@ -21,9 +21,9 @@ module Circuit
           include ActiveModel::Validations
 
           included do
-            validates :slug, slug: {allow_blank: true}, presence: {:unless => :root?}
-            validates :behavior_klass, presence: true
-            validates :parent, presence: true, :if => :slug?
+            validates :slug, :slug => {:allow_blank => true}, :presence => {:unless => :root?}
+            validates :behavior_klass, :presence => true
+            validates :parent, :presence => true, :if => :slug?
           end
         end
 

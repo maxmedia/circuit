@@ -7,7 +7,7 @@ module Circuit
         # @param [String] host to find
         # @return [Model] site
         def get(host)
-          sites = Circuit::Site.any_of({host: host}, {aliases: host}).all
+          sites = Circuit::Site.any_of({:host => host}, {:aliases => host}).all
           if sites.length > 1
             raise MultipleFoundError, "Multiple sites found"
           end
@@ -20,10 +20,10 @@ module Circuit
           include Model::Validations
           include Mongoid::Document
 
-          store_in collection: "circuit_sites"
+          store_in :collection => "circuit_sites"
 
-          field :host, type: String
-          field :aliases, type: Array
+          field :host, :type => String
+          field :aliases, :type => Array
 
           # @!attribute host
           #   @return [String] domain name
@@ -34,8 +34,8 @@ module Circuit
           # @!attribute route
           #   @return [Nodes::Model] root node
 
-          has_one :route, class_name: "Circuit::Node",
-                          inverse_of: :site
+          has_one :route, :class_name => "Circuit::Node",
+                          :inverse_of => :site
         end
       end
     end

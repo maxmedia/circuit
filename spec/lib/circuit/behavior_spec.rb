@@ -29,8 +29,8 @@ describe Circuit::Behavior do
   let(:inherited_class) { InheritedClass }
   subject { BaseClass }
 
-  it { ->{Circuit::Behavior}.should_not raise_error }
-  it { ->{ subject }.should_not raise_error }
+  it { lambda{Circuit::Behavior}.should_not raise_error }
+  it { lambda{ subject }.should_not raise_error }
   it { subject.builder.should be_true }
 
   context 'is listed in ancestors' do
@@ -85,7 +85,7 @@ describe Circuit::Behavior do
     context "already loaded" do
       before { ChangePath }
       subject { Circuit::Behavior.get("ChangePath") }
-      it { should == ->{ChangePath}.call }
+      it { should == lambda{ChangePath}.call }
       it { should have_module(Circuit::Behavior) }
       it { subject.to_s.should == "ChangePath" }
       it { subject.builder?.should be_true }
@@ -99,7 +99,7 @@ describe Circuit::Behavior do
     context "load from .cru" do
       before { Object.send(:remove_const, :RenderOk) if Object.const_defined?(:RenderOk) }
       subject { Circuit::Behavior.get("RenderOk") }
-      it { should == ->{RenderOk}.call }
+      it { should == lambda{RenderOk}.call }
       it { should have_module(Circuit::Behavior) }
       it { subject.to_s.should == "RenderOk" }
       it { subject.builder?.should be_true }

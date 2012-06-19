@@ -8,7 +8,7 @@ describe Circuit::Middleware::Rewriter do
     before do
       @response = ::Rack::Builder.new do
         use Circuit::Middleware::Rewriter, &block
-        run ->(env){ [ 200, {}, %w[SCRIPT_NAME PATH_INFO].collect {|k| env[k]} ] }
+        run lambda { |env| [ 200, {}, %w[SCRIPT_NAME PATH_INFO].collect {|k| env[k]} ] }
       end.to_app.call(mock_request.env)
     end
     subject { @response }
@@ -72,7 +72,7 @@ describe Circuit::Middleware::Rewriter do
       it { should have(2).lines }
       it { subject.first.should == "[CIRCUIT] Rewrite Error: an error occurred" }
       it "second line should have the backtrace" do
-        subject.last.should match(/\A\s+(.+)#{Regexp.quote("rewriter_spec.rb")}\:(\d+)\:in/)
+        subject.last.should match(/\A\s+(.+)#{Regexp.quote("rewriter_spec.rb")}\:(\d+)(\:in|$)/)
       end
     end
   end

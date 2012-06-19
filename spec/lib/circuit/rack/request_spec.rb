@@ -27,7 +27,7 @@ describe Circuit::Rack::Request do
     end
 
     context "path_segments with blanks and double slashes" do
-      subject { mock_request(path: "/foo//bar/baz///").path_segments }
+      subject { mock_request(:path => "/foo//bar/baz///").path_segments }
       it { should == [nil]+%w[foo bar baz] }
     end
 

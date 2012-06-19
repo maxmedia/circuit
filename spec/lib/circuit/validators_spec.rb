@@ -3,8 +3,8 @@ require 'circuit/validators'
 
 describe Circuit::Validators do
   describe Circuit::Validators::DomainValidator do
-    subject { DomainValidator.new(attributes: :domain) }
-    let(:record) { stub(errors: ActiveModel::Errors.new(nil)) }
+    subject { DomainValidator.new(:attributes => :domain) }
+    let(:record) { stub(:errors => ActiveModel::Errors.new(nil)) }
 
     context "with a top level domain" do
       before { subject.validate_each(record, :domain, "localhost") }
@@ -23,13 +23,13 @@ describe Circuit::Validators do
 
     context "with a invalid characters" do
       before { subject.validate_each(record, :domain, "bad%domain.com") }
-      it { record.errors.to_hash.should == {domain: ["is not a valid domain."]} }
+      it { record.errors.to_hash.should == {:domain => ["is not a valid domain."]} }
     end
   end
 
   describe Circuit::Validators::DomainArrayValidator do
-    subject { DomainArrayValidator.new(attributes: :aliases) }
-    let(:record) { stub(errors: ActiveModel::Errors.new(nil)) }
+    subject { DomainArrayValidator.new(:attributes => :aliases) }
+    let(:record) { stub(:errors => ActiveModel::Errors.new(nil)) }
 
     context "with a String" do
       before { subject.validate_each(record, :domain, "localhost") }
@@ -43,7 +43,7 @@ describe Circuit::Validators do
 
     context "with multiple bad domains" do
       before { subject.validate_each(record, :domain, %w[bad%domain1.com bad%domain2.com]) }
-      it { record.errors.to_hash.should == {domain: ["has an invalid domain."]} }
+      it { record.errors.to_hash.should == {:domain => ["has an invalid domain."]} }
     end
 
     context "with all good domains" do
@@ -53,8 +53,8 @@ describe Circuit::Validators do
   end
 
   describe Circuit::Validators::SlugValidator do
-    subject { SlugValidator.new(attributes: :slug) }
-    let(:record) { stub(errors: ActiveModel::Errors.new(nil)) }
+    subject { SlugValidator.new(:attributes => :slug) }
+    let(:record) { stub(:errors => ActiveModel::Errors.new(nil)) }
 
     context "with a valid slug" do
       before { subject.validate_each(record, :slug, "a-path-segment") }
@@ -63,7 +63,7 @@ describe Circuit::Validators do
 
     context "with an invalid slug" do
       before { subject.validate_each(record, :slug, "%") }
-      it { record.errors.to_hash.should == {slug: ["is not a valid path segment."]} }
+      it { record.errors.to_hash.should == {:slug => ["is not a valid path segment."]} }
     end
   end
 end

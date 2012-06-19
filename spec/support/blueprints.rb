@@ -1,4 +1,4 @@
-require_relative 'spec_helpers/simple_machinable'
+require 'support/spec_helpers/simple_machinable'
 
 module CircuitBlueprints
   def ensure_blueprints

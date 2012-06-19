@@ -6,7 +6,7 @@ describe Circuit do
   include SpecHelpers::StoresCleaner
 
   context 'object' do
-    subject { -> { Circuit } }
+    subject { lambda { Circuit } }
     it { should_not raise_error }
   end
 

@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.rdoc_options.concat   ["--main",  "README.md"]
   s.require_paths         = ["lib"]
 
-  s.required_ruby_version = ">= 1.9.2"
+  s.required_ruby_version = ">= 1.8.7"
 
   s.add_runtime_dependency "rack",           "~> 1.3"
   s.add_runtime_dependency "activesupport",  "~> 3.1"

@@ -23,10 +23,10 @@ module Circuit
           include Mongoid::Tree::Ordering
           include Mongoid::Tree::Traversal
 
-          store_in collection: "circuit_nodes"
+          store_in :collection => "circuit_nodes"
 
-          field :slug, type: String
-          field :behavior_klass, type: String
+          field :slug, :type => String
+          field :behavior_klass, :type => String
 
           # @!attribute slug
           #   @return [String] path segment slug
@@ -43,11 +43,11 @@ module Circuit
           # @!attribute children
           #   @return [Array<Sites::Node>] array of child nodes
 
-          belongs_to :site, class_name: "Circuit::Site",
-                            inverse_of: :route
+          belongs_to :site, :class_name => "Circuit::Site",
+                            :inverse_of => :route
 
           def find_child_by_segment(segment)
-            self.children.where(slug: segment).first
+            self.children.where(:slug => segment).first
           end
         end
       end

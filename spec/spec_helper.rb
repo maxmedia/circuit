@@ -14,7 +14,7 @@ required_groups = [:default, :development]
 
 # Require gems and attempt to load mongo
 begin
-  Bundler.require *required_groups, :mongo
+  Bundler.require *(required_groups+[:mongo])
 rescue LoadError
   Bundler.require *required_groups
 end

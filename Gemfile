@@ -11,7 +11,7 @@ group :development, :test do
   gem "delorean",           "~> 1.2.0"
   gem "machinist",          "~> 2.0.0.beta2"
   gem "faker",              "~> 1.0.1"
-  gem "simplecov",          "~> 0.6.4", require: false
+  gem "simplecov",          "~> 0.6.4", :require => false
 end
 
 group :development do
@@ -25,9 +25,9 @@ group :mongo do
   gem "bson_ext",           "~> 1.4"
   gem "mongoid-rspec",      "= 1.4.4"
   gem "machinist_mongo",
-      require: "machinist/mongoid",
-      git: "git://github.com/nmerouze/machinist_mongo.git",
-      branch: "machinist2"
+      :require => "machinist/mongoid",
+      :git => "git://github.com/nmerouze/machinist_mongo.git",
+      :branch => "machinist2"
 end
 
 # Specify core dependencies in core.gemspec
