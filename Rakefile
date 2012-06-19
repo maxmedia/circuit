@@ -37,6 +37,7 @@ end
 desc "Clobber All"
 task :clobber => ["clobber:doc", "clobber:pkg", "clobber:coverage"]
 
+desc "Generate gemfiles for Travis-ci"
 task "generate-gemfiles" do
   definition = Bundler::Dsl.new
   definition.instance_eval(Bundler.read_file("Gemfile"), "Gemfile", 1)
@@ -93,9 +94,11 @@ task "generate-gemfiles" do
       f.puts ln
     end
 
-    f.puts %(gem "activesupport", "< 3.2")
-    f.puts %(gem "activemodel", "< 3.2")
+    f.puts %(gem "activesupport", "~> 3.1.0")
+    f.puts %(gem "activemodel", "~> 3.1.0")
+    f.puts %(gem "rails", "~> 3.1.0", group: [:development, :test])
 
     f.puts %(gemspec path: "../")
   end
+  puts "Done."
 end

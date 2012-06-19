@@ -22,7 +22,6 @@ end
 $mongo_tests = !!Bundler.definition.requested_specs.detect {|s| s.name == "mongo"}
 
 require 'combustion'
-require 'capybara/rspec'
 
 require 'machinist'
 require 'machinist/mongoid' if $mongo_tests
@@ -33,7 +32,6 @@ Combustion.initialize! :action_controller, :action_view, :sprockets
 
 require 'rails/mongoid' if $mongo_tests
 require 'rspec/rails'
-require 'capybara/rails'
 require 'rspec/rails/mocha'
 require 'support/blueprints'
 

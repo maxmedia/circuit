@@ -2,20 +2,16 @@ source "http://rubygems.org"
 
 group :development, :test do
   gem "rake",               "~> 0.9.2"
-  gem "combustion",         "= 0.3.1"
-  gem "rspec-rails",        "~> 2.6.1"
+  gem "combustion",         "= 0.3.2"
+  gem "rspec-rails",        "~> 2.9.0"
   gem "shoulda-matchers",   "~> 1.1.0"
   gem "database_cleaner",   "~> 0.7.2"
-  gem "capybara",           "~> 1.1.2"
   gem "mocha",              "~> 0.11.4"
   gem "rspec-rails-mocha",  "~> 0.3.2"
   gem "delorean",           "~> 1.2.0"
   gem "machinist",          "~> 2.0.0.beta2"
   gem "faker",              "~> 1.0.1"
   gem "simplecov",          "~> 0.6.4", require: false
-
-  # Hack to prevent infinite loop in bundler's dependency resolution
-  gem "thor",               "< 0.15"
 end
 
 group :development do
