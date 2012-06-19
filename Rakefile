@@ -69,6 +69,36 @@ task "generate-gemfiles" do
 
     f.puts %(gemspec :path => "../")
   end
-  
+
+  # Rails 3.1
+  File.open(File.join("gemfiles", "rails31.gemfile"), "w") do |f|
+    f.puts %(source "http://rubygems.org")
+
+    definition.dependencies.each do |dep|
+      next if dep.groups == [:default]
+
+      ln = %(gem "%s", "%s")%[dep.name, dep.requirement]
+      ln << %(, :group => [) << dep.groups.collect {|v| %(:#{v})}.join(", ") << %(])
+      if dep.autorequire == []
+        ln << %(, :require => false)
+      elsif dep.autorequire
+        ln << %(, :require => [)
+        ln << dep.autorequire.collect {|s| %("#{s}")}.join(",")
+        ln << %(])
+      end
+      if dep.source and dep.source.is_a?(Bundler::Source::Git)
+        ln << %(, :git => "%s", :branch => "%s")%[dep.source.options["git"], dep.source.options["branch"]]
+      elsif dep.source
+        raise "Unknown source type: %s"%[dep.source.class]
+      end
+      f.puts ln
+    end
+
+    f.puts %(gem "activesupport", "~> 3.1.0")
+    f.puts %(gem "activemodel", "~> 3.1.0")
+    f.puts %(gem "rails", "~> 3.1.0", :group => [:development, :test])
+
+    f.puts %(gemspec :path => "../")
+  end
   puts "Done."
 end

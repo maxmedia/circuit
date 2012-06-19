@@ -70,4 +70,23 @@ module Circuit
 
   # Top-level error class for Circuit errorsr
   class CircuitError < StandardError; end
+
+  # @return [true,false] true if running with ActiveModel 3.1
+  def self.active_model_31?
+    ActiveModel::VERSION::MAJOR == 3 and
+    ActiveModel::VERSION::MINOR == 1
+  end
+
+  def self.vendor_path
+    Pathname.new(__FILE__).expand_path.dirname.join("..", "vendor")
+  end
+
+  def self.override_rack_builder
+    require vendor_path.join("rack", "urlmap").to_s
+    require vendor_path.join("rack", "builder").to_s
+  end
+end
+
+if Circuit.active_model_31?
+  require Circuit.vendor_path.join("active_support", "inflector").to_s
 end

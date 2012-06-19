@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.summary     = %q{Dynamic rack routing platform}
   s.description = %q{Dynamic rack routing platform}
 
-  s.files                 = Dir[ *%w[lib/**/*.rb config.ru *file] ].tap do |a|
+  s.files                 = Dir[ *%w[lib/**/*.rb vendor/**/*.rb config.ru *file] ].tap do |a|
                               a.delete_if {|fn| File.basename(fn) =~ /^\./}
                             end
   s.test_files            = Dir[ *%w[spec/**/*.rb] ]
@@ -22,8 +22,8 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = ">= 1.8.7"
 
-  s.add_runtime_dependency "rack",           "~> 1.4"
-  s.add_runtime_dependency "activesupport",  "~> 3.2"
-  s.add_runtime_dependency "activemodel",    "~> 3.2"
+  s.add_runtime_dependency "rack",           "~> 1.3"
+  s.add_runtime_dependency "activesupport",  "~> 3.1"
+  s.add_runtime_dependency "activemodel",    "~> 3.1"
   # see Gemfile for development dependencies
 end
