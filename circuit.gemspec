@@ -6,8 +6,8 @@ Gem::Specification.new do |s|
   s.name        = "circuit"
   s.version     = Circuit::VERSION
   s.license     = 'MIT'
-  s.authors     = ["Blake Chambers", "Travis D. Warlick, Jr.", "Maxmedia"]
-  s.email       = ["chambb1@gmail.com", "twarlick@gmail.com"]
+  s.authors     = ["Maxmedia", "Blake Chambers", "Travis D. Warlick, Jr."]
+  s.email       = ["it@maxmedia.com", "chambb1@gmail.com", "twarlick@gmail.com"]
   s.homepage    = "https://github.com/maxmedia/circuit"
   s.summary     = %q{Dynamic rack routing platform}
   s.description = %q{Dynamic rack routing platform}
