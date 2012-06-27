@@ -68,7 +68,7 @@ describe Circuit::Behavior do
   context "without a cru path" do
     before do
       @prev_cru_path = Circuit.cru_path
-      Circuit.instance_variable_set(:@cru_path, nil)
+      Circuit.cru_path = nil
       NoBuilderBehavior.instance_variable_set(:@cru_path, nil)
     end
     subject { NoBuilderBehavior }

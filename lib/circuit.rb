@@ -2,8 +2,11 @@ if Object.const_defined?(:Rails)
   require "circuit/railtie"
 end
 require 'logger'
+require 'forwardable'
 require 'circuit/version'
 require 'circuit/compatibility'
+require 'active_support/configurable'
+require 'circuit/configuration_callbacks'
 
 module Circuit
   autoload :Middleware, 'circuit/middleware'
@@ -14,26 +17,67 @@ module Circuit
   # Top-level error class for Circuit errorsr
   class CircuitError < StandardError; end
 
-  # @param [Logger] logger for Circuit
-  def self.logger=(logger)
-    @logger = logger
+  # @!attribute [r] config
+  #   Maintains configuration values for `logger`, `cru_path`, `site_store`,
+  #   and `node_store`
+  #   @return [ActiveSupport::Configurable::Configuration] configuration
+  #   @see http://rubydoc.info/gems/activesupport/ActiveSupport/Configurable/ClassMethods#config-instance_method
+
+  # @!method configure()
+  #   Configure Circuit
+  #   @yield [ActiveSupport::Configurable::Configuration] configuration object
+  #   @see http://rubydoc.info/gems/activesupport/ActiveSupport/Configurable/ClassMethods#configure-instance_method
+  include ActiveSupport::Configurable
+  include ConfigurationCallbacks
+  config_accessor :logger, :cru_path, :site_store, :node_store,
+                  :instance_reader => false,
+                  :instance_writer => false
+
+  # @!method logger=(logger)
+  #   @!scope class
+  #   @param [Logger] logger for Circuit
+  #   @return [Logger] logger for Circuit
+
+  # @!method logger
+  #   @!scope class
+  #   @return [Logger] logger for Circuit
+
+  # @!method cru_path=(pathname)
+  #   @!scope class
+  #   @param [Pathname,String] pathname directory for behaviors, .cru, and .ru files
+  #   @return [Pathname] pathname directory for behaviors, .cru, and .ru files
+
+  # @!method cru_path
+  #   @!scope class
+  #   @return [Pathname] pathname directory for behaviors, .cru, and .ru files
+  configure do |c|
+    c.logger = ::Logger.new($stdout)
+
+    c.after :set, :cru_path do
+      val = _get(:cru_path)
+      if val and !val.is_a?(Pathname)
+        _set(:cru_path, Pathname.new(val.to_s))
+      end
+    end
   end
 
-  # @return [Logger] logger for Circuit
-  def self.logger
-    @logger ||= ::Logger.new($stdout)
+  # @!method site_store
+  #   @!scope class
+  #   @return [Storage::Sites::BaseStore] the Site storage instance
+
+  # @!method node_store
+  #   @!scope class
+  #   @return [Storage::Nodes::BaseStore] the Node storage instance
+  config.instance_exec do
+    def site_store() Storage::Sites.instance; end
+    def site_store=(args)
+      Storage::Sites.set_instance(*args)
+    end
+    def node_store() Storage::Nodes.instance; end
+    def node_store=(args)
+      Storage::Nodes.set_instance(*args)
+    end
   end
-
-  # @param [Pathname,String] pathname directory for behaviors, .cru, and .ru files
-  def self.cru_path=(pathname)
-    @cru_path = (pathname.is_a?(Pathname) ? pathname : Pathname.new(pathname.to_s))
-  end
-
-  # @return [Pathname] pathname directory for behaviors, .cru, and .ru files
-  def self.cru_path() @cru_path; end
-
-  # @return [Storage::Sites::BaseStore] the Site storage instance
-  def self.site_store() Storage::Sites.instance; end
 
   # @overload set_site_store(instance)
   #   @param [Storage::Sites::BaseStore] instance for the Site store
@@ -48,12 +92,10 @@ module Circuit
   #   @example Set the Site store
   #     Circuit.set_site_store :mongoid_store
   # @return [Storage::Sites::BaseStore] the Site storage instance
+  # @see Storage.set_instance
   def self.set_site_store(*args)
-    Storage::Sites.set_instance(*args)
+    config.site_store = args
   end
-
-  # @return [Storage::Nodes::BaseStore] the Node storage instance
-  def self.node_store() Storage::Nodes.instance; end
 
   # @overload set_node_store(instance)
   #   @param [Storage::Nodes::BaseStore] instance for the Node store
@@ -68,8 +110,9 @@ module Circuit
   #   @example Set the Node store
   #     Circuit.set_node_store :mongoid_store
   # @return [Storage::Nodes::BaseStore] the Node storage instance
+  # @see Storage.set_instance
   def self.set_node_store(*args)
-    Storage::Nodes.set_instance(*args)
+    config.node_store = args
   end
 
   # @return [Pathname] path to the vendor directory
