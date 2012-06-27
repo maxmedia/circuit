@@ -93,7 +93,8 @@ module Circuit
 
           return if args.empty?
 
-          define_callbacks_without_repeat_prevention(*args, options)
+          args << options
+          define_callbacks_without_repeat_prevention(*args)
         end
       end
     end
