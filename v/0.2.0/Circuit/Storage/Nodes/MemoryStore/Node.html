@@ -1,0 +1,708 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Class: Circuit::Storage::Nodes::MemoryStore::Node
+  
+    &mdash; Documentation by YARD 0.8.2.1
+  
+</title>
+
+  <link rel="stylesheet" href="../../../../css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="../../../../css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '../../../../';
+  framesUrl = "../../../../frames.html#!" + escape(window.location.href);
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../../../../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../../../../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../../../../_index.html">Index (N)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../../../../Circuit.html" title="Circuit (module)">Circuit</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../../../Storage.html" title="Circuit::Storage (module)">Storage</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../../Nodes.html" title="Circuit::Storage::Nodes (module)">Nodes</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../MemoryStore.html" title="Circuit::Storage::Nodes::MemoryStore (class)">MemoryStore</a></span></span>
+     &raquo; 
+    <span class="title">Node</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../../../../class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="../../../../method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="../../../../file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Class: Circuit::Storage::Nodes::MemoryStore::Node
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName">Object</span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next">Circuit::Storage::Nodes::MemoryStore::Node</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+      <dt class="r2">Includes:</dt>
+      <dd class="r2"><span class='object_link'><a href="../../MemoryModel.html" title="Circuit::Storage::MemoryModel (module)">MemoryModel</a></span>, <span class='object_link'><a href="../Model.html" title="Circuit::Storage::Nodes::Model (module)">Circuit::Storage::Nodes::Model</a></span>, <span class='object_link'><a href="../Model/Validations.html" title="Circuit::Storage::Nodes::Model::Validations (module)">Circuit::Storage::Nodes::Model::Validations</a></span></dd>
+      
+    
+  
+  
+  
+    <dt class="r1 last">Defined in:</dt>
+    <dd class="r1 last">lib/circuit/storage/nodes/memory_store.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    <p>Concrete memory Node class</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+
+
+
+  <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#behavior_klass-instance_method" title="#behavior_klass (instance method)">- (String) <strong>behavior_klass</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Name of Behavior class or module.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#parent-instance_method" title="#parent (instance method)">- (Sites::Node) <strong>parent</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Parent node.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#site-instance_method" title="#site (instance method)">- (Sites::Model) <strong>site</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Site.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#slug-instance_method" title="#slug (instance method)">- (String) <strong>slug</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Path segment slug.</p>
+</div></span>
+  
+</li>
+
+    
+  </ul>
+
+
+
+  
+  
+  <h3 class="inherited">Attributes included from <span class='object_link'><a href="../../MemoryModel.html" title="Circuit::Storage::MemoryModel (module)">MemoryModel</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="../../MemoryModel.html#attributes-instance_method" title="Circuit::Storage::MemoryModel#attributes (method)">#attributes</a></span>, <span class='object_link'><a href="../../MemoryModel.html#errors-instance_method" title="Circuit::Storage::MemoryModel#errors (method)">#errors</a></span>, <span class='object_link'><a href="../../MemoryModel.html#name-instance_method" title="Circuit::Storage::MemoryModel#name (method)">#name</a></span></p>
+
+
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#initialize-instance_method" title="#initialize (instance method)">- (Node) <strong>initialize</strong>(opts = {}) </a>
+    
+
+    
+  </span>
+  
+  
+    <span class="note title constructor">constructor</span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>A new instance of Node.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#save-instance_method" title="#save (instance method)">- (Boolean) <strong>save</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Save the Node to memory.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="../Model.html" title="Circuit::Storage::Nodes::Model (module)">Circuit::Storage::Nodes::Model</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="../Model.html#behavior-instance_method" title="Circuit::Storage::Nodes::Model#behavior (method)">#behavior</a></span>, <span class='object_link'><a href="../Model.html#behavior%3D-instance_method" title="Circuit::Storage::Nodes::Model#behavior= (method)">#behavior=</a></span>, <span class='object_link'><a href="../Model.html#find_child_by_segment-instance_method" title="Circuit::Storage::Nodes::Model#find_child_by_segment (method)">#find_child_by_segment</a></span>, <span class='object_link'><a href="../Model.html#path-instance_method" title="Circuit::Storage::Nodes::Model#path (method)">#path</a></span>, <span class='object_link'><a href="../Model.html#root%3F-instance_method" title="Circuit::Storage::Nodes::Model#root? (method)">#root?</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="../../MemoryModel.html" title="Circuit::Storage::MemoryModel (module)">MemoryModel</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="../../MemoryModel.html#attribute-instance_method" title="Circuit::Storage::MemoryModel#attribute (method)">#attribute</a></span>, <span class='object_link'><a href="../../MemoryModel.html#attribute%3D-instance_method" title="Circuit::Storage::MemoryModel#attribute= (method)">#attribute=</a></span>, <span class='object_link'><a href="../../MemoryModel.html#attribute%3F-instance_method" title="Circuit::Storage::MemoryModel#attribute? (method)">#attribute?</a></span>, <span class='object_link'><a href="../../MemoryModel.html#eql%3F-instance_method" title="Circuit::Storage::MemoryModel#eql? (method)">#eql?</a></span>, <span class='object_link'><a href="../../MemoryModel.html#memory_model_setup-instance_method" title="Circuit::Storage::MemoryModel#memory_model_setup (method)">#memory_model_setup</a></span>, <span class='object_link'><a href="../../MemoryModel.html#persisted%21-instance_method" title="Circuit::Storage::MemoryModel#persisted! (method)">#persisted!</a></span>, <span class='object_link'><a href="../../MemoryModel.html#persisted%3F-instance_method" title="Circuit::Storage::MemoryModel#persisted? (method)">#persisted?</a></span>, <span class='object_link'><a href="../../MemoryModel.html#save%21-instance_method" title="Circuit::Storage::MemoryModel#save! (method)">#save!</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="../../../Compatibility/ActiveModel31.html" title="Circuit::Compatibility::ActiveModel31 (module)">Compatibility::ActiveModel31</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="../../../Compatibility/ActiveModel31.html#define_attribute_methods-instance_method" title="Circuit::Compatibility::ActiveModel31#define_attribute_methods (method)">#define_attribute_methods</a></span></p>
+
+  
+  <div id="constructor_details" class="method_details_list">
+  <h2>Constructor Details</h2>
+  
+    <div class="method_details first">
+  <h3 class="signature first" id="initialize-instance_method">
+  
+    - (<tt><span class='object_link'><a href="" title="Circuit::Storage::Nodes::MemoryStore::Node (class)">Node</a></span></tt>) <strong>initialize</strong>(opts = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>A new instance of Node</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+38
+39
+40
+41
+42
+43
+44
+45</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/circuit/storage/nodes/memory_store.rb', line 38</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_memory_model_setup'>memory_model_setup</span>
+  <span class='id identifier rubyid_behavior'>behavior</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='symbol'>:behavior</span><span class='rparen'>)</span> <span class='op'>||</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>behavior</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_attributes'>attributes</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_slug'>slug</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:slug</span><span class='rbracket'>]</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_behavior'>behavior</span> <span class='op'>=</span> <span class='id identifier rubyid_behavior'>behavior</span> <span class='kw'>if</span> <span class='id identifier rubyid_behavior'>behavior</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_children'>children</span> <span class='op'>||=</span> <span class='const'>Array</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+  
+</div>
+
+  <div id="instance_attr_details" class="attr_details">
+    <h2>Instance Attribute Details</h2>
+    
+      
+      <span id="behavior_klass=-instance_method"></span>
+      <div class="method_details first">
+  <h3 class="signature first" id="behavior_klass-instance_method">
+  
+    - (<tt>String</tt>) <strong>behavior_klass</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Name of Behavior class or module</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>name of Behavior class or module</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/circuit/storage/nodes/memory_store.rb', line 23</span>
+
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="parent=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="parent-instance_method">
+  
+    - (<tt>Sites::Node</tt>) <strong>parent</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Parent node</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Sites::Node</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>parent node</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/circuit/storage/nodes/memory_store.rb', line 29</span>
+
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="site=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="site-instance_method">
+  
+    - (<tt><span class='object_link'><a href="../../Sites/Model.html" title="Circuit::Storage::Sites::Model (module)">Sites::Model</a></span></tt>) <strong>site</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Site</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../../Sites/Model.html" title="Circuit::Storage::Sites::Model (module)">Sites::Model</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>site</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/circuit/storage/nodes/memory_store.rb', line 26</span>
+
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="slug=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="slug-instance_method">
+  
+    - (<tt>String</tt>) <strong>slug</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Path segment slug</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>path segment slug</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/circuit/storage/nodes/memory_store.rb', line 20</span>
+
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="save-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>save</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Save the Node to memory</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p><code>true</code> if the Node was saved</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/circuit/storage/nodes/memory_store.rb', line 49</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_save'>save</span>
+  <span class='kw'>return</span> <span class='kw'>false</span> <span class='kw'>if</span> <span class='id identifier rubyid_invalid?'>invalid?</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_persisted?'>persisted?</span>
+    <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_site'>site</span><span class='period'>.</span><span class='id identifier rubyid_route'>route</span> <span class='op'>=</span> <span class='kw'>self</span> <span class='kw'>if</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_site'>site</span>
+    <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_parent'>parent</span><span class='period'>.</span><span class='id identifier rubyid_children'>children</span> <span class='op'>&lt;&lt;</span> <span class='kw'>self</span> <span class='kw'>if</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_parent'>parent</span>
+    <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_children'>children</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_c'>c</span><span class='op'>|</span> <span class='id identifier rubyid_c'>c</span><span class='period'>.</span><span class='id identifier rubyid_parent'>parent</span> <span class='op'>=</span> <span class='kw'>self</span><span class='rbrace'>}</span>
+    <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_all'>all</span> <span class='op'>&lt;&lt;</span> <span class='kw'>self</span>
+  <span class='kw'>end</span>
+  <span class='id identifier rubyid_persisted!'>persisted!</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+    <div id="footer">
+  Generated on Thu Jun 28 13:22:00 2012 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.2.1 (ruby-1.9.2).
+</div>
+
+  </body>
+</html>

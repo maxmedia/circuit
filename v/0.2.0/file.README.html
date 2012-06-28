@@ -1,0 +1,316 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>
+  File: README
+  
+    &mdash; Documentation by YARD 0.8.2.1
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '';
+  framesUrl = "frames.html#!" + escape(window.location.href);
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: README</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><div id='filecontents'><p><strong>Circuit is in heavy development and reorganization at the moment.  We are planning to have this API and change
+stabilized in the 0.4.0 release.  0.4.0 and future releases will include deprecation warning and a 0.4.0-stable 
+branch in GitHub.</strong></p>
+
+<h1>Circuit</h1>
+
+<p>Circuit is a rack application middleware that enables dynamic request mapping.  Modeled after 
+<a href="https://github.com/rack/rack/blob/master/lib/rack/builder.rb">Rack::Builder</a>, Circuit provides 
+for a tree of url-mappings that is walked at request time.  If you are interested in dynamically 
+loading middleware and functionality into requests, circuit is a viable solution to do that in a 
+maintainable way.</p>
+
+<p><strong>GitHub</strong> <a href="http://github.com/maxmedia/circuit">http://github.com/maxmedia/circuit</a></p>
+
+<p><strong>Issues</strong> <a href="http://github.com/maxmedia/circuit/issues">http://github.com/maxmedia/circuit/issues</a></p>
+
+<p><strong>Travis-CI</strong> <a href="http://travis-ci.org/maxmedia/circuit">http://travis-ci.org/maxmedia/circuit</a>
+<a href="http://travis-ci.org/maxmedia/circuit"><img src="https://secure.travis-ci.org/maxmedia/circuit.png?branch=master" alt="Build Status"></a></p>
+
+<p><strong>Docs</strong> <a href="http://maxmedia.github.com/circuit">http://maxmedia.github.com/circuit</a></p>
+
+<p><strong>RubyGems</strong> <a href="http://rubygems.org/gems/circuit">http://rubygems.org/gems/circuit</a></p>
+
+<h2>Contributing</h2>
+
+<p>Anyone is welcome to contribute to circuit.  Just <a href="https://github.com/maxmedia/circuit/fork_select">fork us on GitHub</a>
+and send a pull request when you are ready.</p>
+
+<p>Please ensure the following compatibility requirements are met.</p>
+
+<h2>Compatibility</h2>
+
+<p>Circuit is compatible with the following versions of Ruby, Rack, and Rails components:</p>
+
+<p><strong>Ruby</strong> 1.8.7 and 1.9
+<em>Ruby 1.8.7 support will be removed when Rails 4 support is added</em></p>
+
+<p><strong>Rack</strong> 1.3 and 1.4</p>
+
+<p><strong>Rails</strong> 3.1 and 3.2<br>
+<em>ActiveSupport and ActiveModel are the only requirements from Rails</em></p>
+
+<p><strong>Mongoid</strong> 2.4+
+<em>MongoDB/Mongoid is not required</em></p>
+
+<h2>A common discussion ensues.</h2>
+
+<p><strong>Q: But why would someone need database powered Rack::Builder?</strong></p>
+
+<p>Response: The rack ecosystem doesn&#39;t have a good way to handle dynamic http routing.  Circuit meets the 
+needs of dynamic routing while preserving the functionality that Rack provides.  </p>
+
+<p><strong>Comment: That seems really... slow.</strong></p>
+
+<p>Response: A valid point, but circuit isn&#39;t for every codebase.  If you need dynamic routing (i.e. 
+using splat routing methods followed by a database lookup), you are going to see similar 
+performance to circuits backends.  Along with that, circuit provides a number of useful features 
+that far outweigh performance costs.</p>
+
+<p><strong>Comment: this isn&#39;t very <em>Railsy</em></strong></p>
+
+<p>Response: In practice, codebases that use circuit to solve dynamic routing are <strong>more</strong> railsy.<br>
+Let me explain:</p>
+
+<p>If you are constructing an application in Rails that requires dynamic user specified slugs, you 
+probably have this line uncommented from your routes: </p>
+
+<pre class="code ruby"><code><span class='comment'># yuck.
+</span><span class='id identifier rubyid_match'>match</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/*</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='label'>to:</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>site#proxy</span><span class='tstring_end'>'</span></span>
+</code></pre>
+
+<p>Say you are creating a CMS using this line.  This means that that one action will handle all 
+requests that don&#39;t match the rest of your routes definition.  Immediately this might seem like a good 
+idea, but it will inevitably lead to a very expensive Rails action that handles a large number of 
+requests on the site.</p>
+
+<p>Circuit will allow you to remove this line and use middlewares to route requests to different 
+controllers (even rack applications), and control this logic via the backend of your choice. 
+Routes can be extended with their specified behaviors, allowing even more control over requests 
+than rails provides out of the box.</p>
+
+<p>Using the Rerouting Middleware you can easily reroute downstream requests to standard-issue rails 
+controllers, enabling your dynamic requests to add middleware, modify the rack request object and 
+even change your downstream app (to another rack app).</p>
+
+<h2>A mapping graph to route rack requests.</h2>
+
+<p>TODO</p>
+
+<h2>Rackup-based behaviors.</h2>
+
+<p>Circuit uses behaviors to extend a requests functionality in the rack stack.  Behaviors are written
+and stored in circuit-rackup files (<code>.cru</code>).  The difference between a normal rackup file and a 
+circuit-rackup file is that a circuit-rackup file does not have to have a <code>run</code> declaration; this 
+makes circuit-rackup files only <em>partially</em> rackup compliant. Below is an example of a behavior 
+that renders an ok response (this is a fully-compliant rackup file; however, we still use the 
+<code>.cru</code> extension for the behavior):</p>
+
+<pre class="code ruby"><code><span class='comment'># ./app/behaviors/render_ok.cru
+</span>
+<span class='id identifier rubyid_run'>run</span> <span class='id identifier rubyid_proc'>proc</span> <span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_env'>env</span><span class='op'>|</span> <span class='lbracket'>[</span><span class='int'>200</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Content-Type</span><span class='tstring_end'>'</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>text/plain</span><span class='tstring_end'>'</span></span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>OK</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='rbracket'>]</span> <span class='rbrace'>}</span>
+</code></pre>
+
+<p>First, setup your <code>Site</code>:</p>
+
+<pre class="code ruby"><code>$ &gt; @site = Circuit::Site.new(host: &quot;example.com&quot;, aliases: [&quot;www.example.com&quot;])
+$ &gt; @site.save
+$ =&gt; true
+</code></pre>
+
+<p>Then, setup your <code>Node</code> and specify the behavior:</p>
+
+<pre class="code ruby"><code>$ &gt; @node = Circuit::Node.new(slug: &quot;&quot;, behavior_klass: &quot;RenderOk&quot;)
+$ &gt; @node.site = @site
+$ &gt; @node.save
+$ =&gt; true
+$ &gt; @node.root? # the blank slug indicates the root
+$ =&gt; true
+$ &gt; @node.behavior
+$ =&gt; RenderOk
+$ &gt; @node.behavior.class
+$ =&gt; Module
+$ &gt; @node.behavior.included_modules
+$ =&gt; [Circuit::Behavior]
+</code></pre>
+
+<p>When your site is loaded, the render_ok.ru behavior will be executed.</p>
+
+<p>Behaviors are loaded into memory during application initialization.  Any modifications to behaviors 
+will require restarting your application.</p>
+
+<h2>Circuit::Middleware::Rewriter</h2>
+
+<p>One useful middleware baked into circuit is the <code>Rewriter</code>.  The idea of this middleware is 
+to use circuit routing to route to dynamic content you have associated in you routing tree.</p>
+
+<pre class="code ruby"><code><span class='comment'># ./app/behaviors/page.ru
+</span>
+<span class='id identifier rubyid_use'>use</span> <span class='const'>Circuit</span><span class='op'>::</span><span class='const'>Middleware</span><span class='op'>::</span><span class='const'>Rewriter</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_request'>request</span><span class='op'>|</span>
+  <span class='id identifier rubyid_content'>content</span> <span class='op'>=</span> <span class='id identifier rubyid_request'>request</span><span class='period'>.</span><span class='id identifier rubyid_route'>route</span><span class='period'>.</span><span class='id identifier rubyid_last'>last</span><span class='period'>.</span><span class='id identifier rubyid_content'>content</span>
+  <span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_content'>content</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='period'>.</span><span class='id identifier rubyid_underscore'>underscore</span><span class='period'>.</span><span class='id identifier rubyid_pluralize'>pluralize</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_content'>content</span><span class='period'>.</span><span class='id identifier rubyid_id'>id</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
+<span class='kw'>end</span>
+</code></pre>
+
+<p>and the corresponding downstream rails file:</p>
+
+<pre class="code ruby"><code><span class='comment'># ./config/routes.rb
+</span>
+<span class='const'>Rails</span><span class='period'>.</span><span class='id identifier rubyid_application'>application</span><span class='period'>.</span><span class='id identifier rubyid_routes'>routes</span><span class='period'>.</span><span class='id identifier rubyid_draw'>draw</span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_resources'>resources</span> <span class='symbol'>:contents</span>
+<span class='kw'>end</span>
+</code></pre>
+
+<p>In the above example, we are assuming you have created a model that has a content object associated 
+to it.  By doing this we have now created a small CMS.</p>
+
+<h2>Multi-Backend support</h2>
+
+<p>Circuit provides support for different backends to power this map tree. Currently, the gem includes a 
+Mongoid backend and a memory backend.  Each backend is how Circuit is constructed to interface with your
+persisted routing tree.  Backends are ActiveModel based.</p>
+
+<p>Currently, Backends are ActiveModel backed and within them they define the model that the router interacts 
+with. We are discussing the idea of separating the backends from the model (to drop the ActiveModel dependency).</p>
+
+<p><strong>This is where circuit needs your help!</strong>  We would love to see backends for many common ODM&#39;s.  Our 
+hit-list includes:</p>
+
+<ul>
+<li><del>Mongoid</del></li>
+<li><del>Memory</del></li>
+<li>Yaml</li>
+<li>Redis</li>
+<li>ActiveRecord</li>
+<li>RiakClient/Ripple</li>
+</ul>
+
+<p>We will entertain pull requests from other commonly used libraries.</p>
+
+<h2>Roadmap</h2>
+
+<h3>0.2.0</h3>
+
+<ul>
+<li><del>better readme</del></li>
+<li><del>Separate site and routing tree</del></li>
+<li><del>database site aliases</del></li>
+<li><del>multi-backend support</del></li>
+<li><del>travis-ci</del></li>
+<li><del>Move to github issues</del></li>
+<li><del>Remove rails dependencies (specifically ActionPack)</del></li>
+<li><del>Behaviors are specified in rackup files, instead of classes</del></li>
+<li><del>Behaviors support partial Rack::Builder: <code>run</code> and <code>use</code> methods<del></li>
+</ul>
+
+<h3>0.2.1</h3>
+
+<ul>
+<li>Behaviors support full Rack::Builder: <code>run</code>, <code>use</code>, and <code>map</code> methods.</li>
+</ul>
+
+<h3>0.3.0</h3>
+
+<ul>
+<li>tree inheritable middlewares.</li>
+<li>full documentation. </li>
+</ul>
+
+<h3>0.4.0</h3>
+
+<ul>
+<li>API stability</li>
+</ul>
+
+<h3>In the future</h3>
+
+<ul>
+<li>Goliath support</li>
+</ul>
+
+<hr>
+
+<pre class="code ruby"><code>Copyright (c) 2012 MaxMedia
+
+Permission is hereby granted, free of charge, to any person obtaining 
+a copy of this software and associated documentation files (the 
+&quot;Software&quot;), to deal in the Software without restriction, including 
+without limitation the rights to use, copy, modify, merge, publish, 
+distribute, sublicense, and/or sell copies of the Software, and to 
+permit persons to whom the Software is furnished to do so, subject 
+to the following conditions:
+
+The above copyright notice and this permission notice shall be included 
+in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, 
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY 
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+</code></pre>
+</div></div>
+
+    <div id="footer">
+  Generated on Thu Jun 28 13:21:57 2012 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.2.1 (ruby-1.9.2).
+</div>
+
+  </body>
+</html>
