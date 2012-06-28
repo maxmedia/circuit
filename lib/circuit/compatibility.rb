@@ -1,3 +1,5 @@
+require 'rack'
+require 'active_support'
 require 'active_support/concern'
 require 'active_support/core_ext/kernel/reporting'
 
