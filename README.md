@@ -13,7 +13,7 @@ branch in GitHub.**
 **Travis-CI** http://travis-ci.org/maxmedia/circuit
 [![Build Status](https://secure.travis-ci.org/maxmedia/circuit.png?branch=master)](http://travis-ci.org/maxmedia/circuit)
 
-**Docs** http://rubydoc.info/gems/circuit
+**Docs** http://maxmedia.github.com/circuit
 
 **RubyGems** http://rubygems.org/gems/circuit
 
