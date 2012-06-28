@@ -2,6 +2,7 @@ require 'rack'
 require 'active_support'
 require 'active_support/concern'
 require 'active_support/core_ext/kernel/reporting'
+require 'dionysus/string/version_match'
 
 module Circuit
   # Compatibility extensions for Rack 1.3 and Rails 3.1
@@ -68,14 +69,5 @@ module Circuit
       require vendor_path.join("active_support-3.2", "inflector", "methods").to_s
       require vendor_path.join("active_support-3.2", "core_ext", "string", "inflections").to_s
     end
-  end
-end
-
-class String
-  # @param (String) req Gem version requirement
-  # @return (Boolean) true if the given requirement is satisfied by the current
-  #                   String
-  def version_match?(req)
-    Gem::Requirement.new(req) =~ Gem::Version.new(self)
   end
 end
