@@ -1,6 +1,7 @@
 require "yard"
 require "yard/rake/yardoc_task"
 require "dionysus/redcarpet/includes"
+require "dionysus/redcarpet/plaintext"
 
 namespace :doc do
   YARD::Rake::YardocTask.new do |yardoc|
