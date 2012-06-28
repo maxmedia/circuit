@@ -8,15 +8,15 @@ Gem::Specification.new do |s|
   s.license     = 'MIT'
   s.authors     = ["Maxmedia", "Blake Chambers", "Travis D. Warlick, Jr."]
   s.email       = ["it@maxmedia.com", "chambb1@gmail.com", "twarlick@gmail.com"]
-  s.homepage    = "https://github.com/maxmedia/circuit"
-  s.summary     = %q{Dynamic rack routing platform}
-  s.description = %q{Dynamic rack routing platform}
+  s.homepage    = "http://github.com/maxmedia/circuit"
+  s.summary     = %q{Dynamic (backend-driven) request routing for Rack}
+  s.description = File.read("description.md").gsub(/\s*\n+\s*/, " ")
 
-  s.files                 = Dir[ *%w[lib/**/*.rb vendor/**/*.rb config.ru *file] ].tap do |a|
+  s.files                 = Dir[ *%w[lib/**/*.rb vendor/**/*.rb config.ru *file description.md] ].tap do |a|
                               a.delete_if {|fn| File.basename(fn) =~ /^\./}
                             end
   s.test_files            = Dir[ *%w[spec/**/*.rb] ]
-  s.extra_rdoc_files      = Dir[ *%w[README.md LICENSE] ]
+  s.extra_rdoc_files      = Dir[ *%w[README.md LICENSE docs/*.md] ]
   s.rdoc_options.concat   ["--main",  "README.md"]
   s.require_paths         = ["lib"]
 
@@ -25,5 +25,6 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "rack",           "~> 1.3"
   s.add_runtime_dependency "activesupport",  "~> 3.1"
   s.add_runtime_dependency "activemodel",    "~> 3.1"
+  s.add_runtime_dependency "dionysus",       "~> 2.0.0"
   # see Gemfile for development dependencies
 end

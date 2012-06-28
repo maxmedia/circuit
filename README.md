@@ -1,18 +1,32 @@
-**This README is based on features planned to be included in the 0.2.0 release of circuit.**
-
 **Circuit is in heavy development and reorganization at the moment.  We are planning to have this API and change
 stabilized in the 0.4.0 release.  0.4.0 and future releases will include deprecation warning and a 0.4.0-stable 
-branch in github.**
+branch in GitHub.**
 
-# circuit
+# Circuit
 
-Circuit is a rack application middleware that enables dynamic request mapping.  Modeled after 
-[Rack::Builder](https://github.com/rack/rack/blob/master/lib/rack/builder.rb), Circuit provides 
-for a tree of url-mappings that is walked at request time.  If you are interested in dynamically 
-loading middleware and functionality into requests, circuit is a viable solution to do that in a 
-maintainable way.
+<<< description.md
 
-### a common discussion ensues.
+**GitHub** http://github.com/maxmedia/circuit
+
+**Issues** http://github.com/maxmedia/circuit/issues
+
+**Travis-CI** http://travis-ci.org/maxmedia/circuit
+[![Build Status](https://secure.travis-ci.org/maxmedia/circuit.png?branch=master)](http://travis-ci.org/maxmedia/circuit)
+
+**Docs** http://rubydoc.info/gems/circuit
+
+**RubyGems** http://rubygems.org/gems/circuit
+
+## Contributing
+
+Anyone is welcome to contribute to circuit.  Just [fork us on GitHub](https://github.com/maxmedia/circuit/fork_select)
+and send a pull request when you are ready.
+
+Please ensure the following compatibility requirements are met.
+
+<<< docs/COMPATIBILITY.md
+
+## A common discussion ensues.
 
 **Q: But why would someone need database powered Rack::Builder?**
 
@@ -51,43 +65,62 @@ Using the Rerouting Middleware you can easily reroute downstream requests to sta
 controllers, enabling your dynamic requests to add middleware, modify the rack request object and 
 even change your downstream app (to another rack app).
 
-### a mapping graph to route rack requests.
+## A mapping graph to route rack requests.
 
 TODO
 
-### .ru-based behaviors.
+## Rackup-based behaviors.
 
-Circuit uses behaviors to extend a requests functionality in the rack stack.  Behaviors written and 
-stored in rackup files.  Below is an example of a behavior that renders an ok response:
+Circuit uses behaviors to extend a requests functionality in the rack stack.  Behaviors are written
+and stored in circuit-rackup files (`.cru`).  The difference between a normal rackup file and a 
+circuit-rackup file is that a circuit-rackup file does not have to have a `run` declaration; this 
+makes circuit-rackup files only *partially* rackup compliant. Below is an example of a behavior 
+that renders an ok response (this is a fully-compliant rackup file; however, we still use the 
+`.cru` extension for the behavior):
 
-    # ./app/behaviors/render_ok.ru
+    # ./app/behaviors/render_ok.cru
     
-    run proc {|env| [200, {'Content-Type' => 'text/plain'}, ['ok']] }
+    run proc {|env| [200, {'Content-Type' => 'text/plain'}, ['OK']] }
     
-Within your Site or Route specify your behavior:
 
-    $> @site = Site.first
-    $> @site.behavior_file = :render_ok
+First, setup your `Site`:
+
+    $ > @site = Circuit::Site.new(host: "example.com", aliases: ["www.example.com"])
+    $ > @site.save
     $ => true
-    $> @site.save
+
+Then, setup your `Node` and specify the behavior:
+
+    $ > @node = Circuit::Node.new(slug: "", behavior_klass: "RenderOk")
+    $ > @node.site = @site
+    $ > @node.save
+    $ => true
+    $ > @node.root? # the blank slug indicates the root
+    $ => true
+    $ > @node.behavior
+    $ => RenderOk
+    $ > @node.behavior.class
+    $ => Module
+    $ > @node.behavior.included_modules
+    $ => [Circuit::Behavior]
     
 When your site is loaded, the render_ok.ru behavior will be executed.
 
 Behaviors are loaded into memory during application initialization.  Any modifications to behaviors 
 will require restarting your application.
 
-### Behaviors::RewriteDownstream
+## Circuit::Middleware::Rewriter
 
-One useful middleware baked into circuit is the `RewriteDownstream`.  The idea of this middleware is 
+One useful middleware baked into circuit is the `Rewriter`.  The idea of this middleware is 
 to use circuit routing to route to dynamic content you have associated in you routing tree.
 
     # ./app/behaviors/page.ru
     
-    use Rack::DownstreamRewrite do |env|
-      content = env["rack.circuit.current_route"].content
-      env["PATH_INFO"] = "/#{content.class.to_s.underscore.pluralize}/#{content.id}"
+    use Circuit::Middleware::Rewriter do |request|
+      content = request.route.last.content
+      ["/#{content.class.to_s.underscore.pluralize}", "/#{content.id}"]
     end
-    
+
 and the corresponding downstream rails file:
 
     # ./config/routes.rb
@@ -95,11 +128,11 @@ and the corresponding downstream rails file:
     Rails.application.routes.draw do
       resources :contents
     end
-    
+
 In the above example, we are assuming you have created a model that has a content object associated 
 to it.  By doing this we have now created a small CMS.
 
-### Multi-Backend support
+## Multi-Backend support
 
 Circuit provides support for different backends to power this map tree. Currently, the gem includes a 
 Mongoid backend and a memory backend.  Each backend is how Circuit is constructed to interface with your
@@ -120,35 +153,9 @@ hit-list includes:
 
 We will entertain pull requests from other commonly used libraries.
 
-## roadmap
-
-### 0.2.0
-
-* <del>better readme</del>
-* <del>Separate site and routing tree</del>
-* <del>database site aliases</del>
-* <del>multi-backend support</del>
-* <del>travis-ci</del>
-* Move to github issues.
-* Remove rails dependencies.
-* Behaviors are specified in rackup files, instead of classes.
-* Behaviors support full Rack::Builder; including `run`, `use`, and `map` methods.
-
-### 0.3.0
-
-* tree inheritable middlewares.
-* full documentation. 
-
-### 0.4.0
-
-* API stability
-
-### In the future
-
-* Goliath support
+<<< docs/ROADMAP.md
 
 -----------------------------------------------
-
-Copyright (c) 2012 [MaxMedia](http://maxmedia.com)
-
-[licensing info](http://github.com/maxmedia/circuit/blob/master/LICENSE)
+```
+<<< LICENSE
+```
