@@ -2,11 +2,10 @@ if Object.const_defined?(:Rails)
   require "circuit/railtie"
 end
 require 'logger'
-require 'forwardable'
 require 'circuit/version'
 require 'circuit/compatibility'
 require 'active_support/configurable'
-require 'circuit/configuration_callbacks'
+require 'dionysus/configuration_callbacks'
 
 module Circuit
   autoload :Middleware, 'circuit/middleware'
@@ -28,7 +27,7 @@ module Circuit
   #   @yield [ActiveSupport::Configurable::Configuration] configuration object
   #   @see http://rubydoc.info/gems/activesupport/ActiveSupport/Configurable/ClassMethods#configure-instance_method
   include ActiveSupport::Configurable
-  include ConfigurationCallbacks
+  include Dionysus::ConfigurationCallbacks
   config_accessor :logger, :cru_path, :site_store, :node_store,
                   :instance_reader => false,
                   :instance_writer => false
@@ -50,6 +49,14 @@ module Circuit
   # @!method cru_path
   #   @!scope class
   #   @return [Pathname] pathname directory for behaviors, .cru, and .ru files
+
+  # @!method site_store
+  #   @!scope class
+  #   @return [Storage::Sites::BaseStore] the Site storage instance
+
+  # @!method node_store
+  #   @!scope class
+  #   @return [Storage::Nodes::BaseStore] the Node storage instance
   configure do |c|
     c.logger = ::Logger.new($stdout)
 
@@ -59,21 +66,15 @@ module Circuit
         _set(:cru_path, Pathname.new(val.to_s))
       end
     end
+
+    c.forward :get, :site_store, Storage::Sites, :instance
+    c.forward :get, :node_store, Storage::Nodes, :instance
   end
 
-  # @!method site_store
-  #   @!scope class
-  #   @return [Storage::Sites::BaseStore] the Site storage instance
-
-  # @!method node_store
-  #   @!scope class
-  #   @return [Storage::Nodes::BaseStore] the Node storage instance
   config.instance_exec do
-    def site_store() Storage::Sites.instance; end
     def site_store=(args)
       Storage::Sites.set_instance(*args)
     end
-    def node_store() Storage::Nodes.instance; end
     def node_store=(args)
       Storage::Nodes.set_instance(*args)
     end
