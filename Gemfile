@@ -26,11 +26,11 @@ group :mongo do
   gem "mongoid-rspec",      "= 1.4.4"
   gem "machinist_mongo",
       :require => "machinist/mongoid",
-      :git => "git://github.com/nmerouze/machinist_mongo.git",
+      :github => "nmerouze/machinist_mongo",
       :branch => "machinist2"
 end
 
-gem "dionysus", :github => "tekwiz/dionysus", :ref => "d81f01a"
+gem "dionysus", :github => "tekwiz/dionysus", :ref => "79be0ff"
 
 # Specify core dependencies in core.gemspec
 gemspec
