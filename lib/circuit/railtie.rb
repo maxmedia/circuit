@@ -1,3 +1,5 @@
+require 'rails/railtie'
+
 module Circuit
   # Initializer `circuit_railtie.configure_rails_initialization`
   # ------------------------------------------------------------
