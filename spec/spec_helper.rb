@@ -1,14 +1,14 @@
 require 'rubygems'
-require 'simplecov'
-SimpleCov.start do
-  add_filter "/lib/circuit/version.rb"
-  add_filter "/spec/"
+
+if RUBY_VERSION =~ /^1\.9\./
+  require 'simplecov'
+  SimpleCov.start do
+    add_filter "/lib/circuit/version.rb"
+    add_filter "/spec/"
+  end
 end
 
 require 'bundler'
-
-require 'simplecov'
-SimpleCov.start
 
 required_groups = [:default, :development]
 
