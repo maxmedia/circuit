@@ -12,5 +12,5 @@ gem "faker", "~> 1.0.1", :group => [:development, :test]
 gem "simplecov", "~> 0.6.4", :group => [:development, :test], :require => false
 gem "yard", "~> 0.8", :group => [:development]
 gem "redcarpet", "~> 2.1", :group => [:development]
-gem "dionysus", ">= 0", :group => [:default], :git => "git://github.com/tekwiz/dionysus.git", :ref => "79be0ff"
+gem "dionysus", ">= 0", :group => [:default], :git => "git://github.com/tekwiz/dionysus.git", :ref => "3f842b0"
 gemspec :path => "../"

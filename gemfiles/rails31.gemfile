@@ -17,7 +17,7 @@ gem "mongoid-tree", "~> 0.7", :group => [:mongo]
 gem "bson_ext", "~> 1.4", :group => [:mongo]
 gem "mongoid-rspec", "= 1.4.4", :group => [:mongo]
 gem "machinist_mongo", ">= 0", :group => [:mongo], :require => ["machinist/mongoid"], :git => "git://github.com/nmerouze/machinist_mongo.git", :branch => "machinist2"
-gem "dionysus", ">= 0", :group => [:default], :git => "git://github.com/tekwiz/dionysus.git", :ref => "79be0ff"
+gem "dionysus", ">= 0", :group => [:default], :git => "git://github.com/tekwiz/dionysus.git", :ref => "3f842b0"
 gem "activesupport", "~> 3.1.0"
 gem "activemodel", "~> 3.1.0"
 gem "rails", "~> 3.1.0", :group => [:development, :test]

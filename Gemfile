@@ -30,7 +30,7 @@ group :mongo do
       :branch => "machinist2"
 end
 
-gem "dionysus", :github => "tekwiz/dionysus", :ref => "79be0ff"
+gem "dionysus", :github => "tekwiz/dionysus", :ref => "3f842b0"
 
 # Specify core dependencies in core.gemspec
 gemspec
