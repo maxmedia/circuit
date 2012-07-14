@@ -27,8 +27,12 @@ module Circuit
       def call(env)
         begin
           request = ::Rack::Request.new(env)
-          script_name, path_info, path = request.script_name, request.path_info, request.path
-          env["SCRIPT_NAME"], env["PATH_INFO"] = @block.call(script_name, path_info)
+          script_name, path_info, path = request.script_name.dup, request.path_info.dup, request.path
+          if @block.arity == 1
+            env["SCRIPT_NAME"], env["PATH_INFO"] = @block.call(request)
+          else
+            env["SCRIPT_NAME"], env["PATH_INFO"] = @block.call(script_name, path_info)
+          end
           if script_name != env["SCRIPT_NAME"] or path_info != env["PATH_INFO"]
             ::Circuit.logger.info("[CIRCUIT] Rewriting: '#{path}'->'#{request.path}'")
           end

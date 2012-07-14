@@ -25,6 +25,13 @@ describe Circuit::Middleware::Rewriter do
     end
   end
 
+  context "rewrite from request" do
+    run_app do |request|
+      ["/site/5#{request.script_name}", "/path#{request.path_info}"]
+    end
+    it { should == [ 200, {}, %w[/site/5 /path/foo/bar/baz] ] }
+  end
+
   context "rewrite script_name and path_info" do
     run_app do |script_name, path_info|
       ["/site/5#{script_name}", path_info+"/1"]
