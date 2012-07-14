@@ -5,6 +5,7 @@ if RUBY_VERSION =~ /^1\.9\./
   SimpleCov.start do
     add_filter "/lib/circuit/version.rb"
     add_filter "/spec/"
+    add_filter "/vendor/"
   end
 end
 

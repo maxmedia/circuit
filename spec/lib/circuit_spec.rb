@@ -136,4 +136,20 @@ describe Circuit do
       end
     end
   end
+
+  context "set cru_path" do
+    context "by String" do
+      before { Circuit.cru_path = "foo/bar" }
+      it { Circuit.cru_path.should == Pathname.new("foo/bar") }
+    end
+
+    context "by Pathname" do
+      before { Circuit.cru_path = Pathname.new("foo/bar") }
+      it { Circuit.cru_path.should == Pathname.new("foo/bar") }
+    end
+  end
+
+  describe "vendor_path" do
+    it { Circuit.vendor_path.should == Pathname.new(__FILE__).expand_path.dirname.join("..", "..", "vendor")}
+  end
 end
