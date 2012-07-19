@@ -11,7 +11,7 @@ end
 
 require 'bundler'
 
-required_groups = [:default, :development]
+required_groups = [:default, :development, :test]
 
 # Require gems and attempt to load mongo
 begin
