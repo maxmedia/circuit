@@ -25,7 +25,7 @@ module Circuit
       include BuilderExt
 
       # Parses the rackup (or circuit-rackup .cru) file.
-      # @return [Circuit::Rack::Builder] the builder
+      # @return [Circuit::Rack::Builder, options] the builder and any parsed options
       def self.parse_file(config, opts = ::Rack::Server::Options.new)
         # allow for objects that are String-like but don't respond to =~ 
         # (e.g. Pathname)

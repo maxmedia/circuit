@@ -13,15 +13,15 @@ module Circuit
     # @param [String] str name of Behavior constant to get
     # @return [Behavior] Behavior constant
     def self.get(str)
-      str.classify.constantize
+      str.camelize.constantize
     rescue NameError
-      str = str.classify
+      str = str.camelize
       nesting = str.deconstantize
       nesting = (nesting.blank? ? Object : nesting.constantize)
 
       mod = Module.new do
           include Circuit::Behavior
-          self.cru_path = Circuit.cru_path.join(str.classify.underscore+".cru")
+          self.cru_path = Circuit.cru_path.join(str.underscore+".cru")
           self.builder!
           class_eval %(def self.to_s() "#{str}"; end)
         end
@@ -46,17 +46,18 @@ module Circuit
       # @return [Builder] the Builder
       def builder!
         if self.cru_path.file?
-          @builder = Circuit::Rack::Builder.parse_file(self.cru_path)
+          @builder, opts_ = Circuit::Rack::Builder.parse_file(self.cru_path)
         else
-          @builder = Circuit::Rack::Builder.new
+          @builder, opts_ = Circuit::Rack::Builder.new
         end
+        @builder
       end
 
       # Returns the Builder (and creates one if it doesn't exist yet)
       # @return [Builder] the Builder
       # @see #builder!
       def builder
-        @builder ||= self.builder!
+        @builder || self.builder!
       end
 
       attr_writer :builder
