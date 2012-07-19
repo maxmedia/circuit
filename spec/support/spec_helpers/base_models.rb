@@ -47,7 +47,7 @@ module SpecHelpers
       let(:site_2)                    { site_class.make! :host => "www.bar.com", :aliases => [] }
       let(:root_2)                    { node_class.make! :slug => nil, :site => site_2 }
 
-      let(:site)                      { site_class.make! }
+      let(:site)                      { site_class.make! :host => "example.org", :aliases => ["www.example.org"] }
       let(:root)                      { node_class.make! :slug => nil, :site => site }
       let(:child)                     { node_class.make! :parent => root         }
       let(:grandchild)                { node_class.make! :parent => child        }

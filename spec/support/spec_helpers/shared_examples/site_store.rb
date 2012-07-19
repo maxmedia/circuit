@@ -49,7 +49,7 @@ shared_examples "site store" do
       it { should respond_to(:aliases) }
       it { subject.aliases.should_not be_blank }
       it { subject.aliases.should be_a(Array) }
-      it { subject.aliases.length.should == 2 }
+      it { subject.aliases.length.should == 1 }
     end
 
     context "allows blank aliases" do

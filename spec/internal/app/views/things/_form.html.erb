@@ -1,0 +1,11 @@
+<% @resource.errors.full_messages.each do |msg| %>
+  <p class="error"><%=msg %></p>
+<% end %>
+
+<%= form_for @resource do |f| %>
+  <p data-field="name">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <%= f.submit %>
+<% end %>

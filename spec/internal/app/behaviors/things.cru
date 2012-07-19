@@ -1,0 +1,19 @@
+class ThingsAuthMiddleware
+  def initialize(app)
+    @app = app
+  end
+
+  def call(env)
+    request = ::Rack::Request.new(env)
+    if request.GET["auth"] == "myauthkey"
+      @app.call(env)
+    else
+      [401, {"Content-Type" => "text/plain"}, ["Unauthorized"]]
+    end
+  end
+end
+
+use ThingsAuthMiddleware
+use Circuit::Middleware::Rewriter do |request|
+      ["", request.path]
+    end

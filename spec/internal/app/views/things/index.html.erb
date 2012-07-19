@@ -1,0 +1,7 @@
+<h1>Things</h1>
+
+<ul>
+  <% @resources.each do |thing| %>
+    <li data-id="<%=thing.id %>"><%= thing.name %></li>
+  <% end %>
+</ul>

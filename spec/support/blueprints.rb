@@ -2,7 +2,7 @@ require 'support/spec_helpers/simple_machinable'
 
 module CircuitBlueprints
   def ensure_blueprints
-    SimpleMachinable.ensure_machinable(Circuit::Site, Circuit::Node)
+    SimpleMachinable.ensure_machinable(Circuit::Site, Circuit::Node, Thing)
 
     if Circuit::Site.blueprint.nil?
       Circuit::Site.blueprint do
@@ -15,6 +15,12 @@ module CircuitBlueprints
       Circuit::Node.blueprint do
         slug            { Faker::Lorem.words(rand(3) + 2).join('-') }
         behavior_klass  { "RenderOk" }
+      end
+    end
+
+    if Thing.blueprint.nil?
+      Thing.blueprint do
+        name { Faker::Lorem.words(rand(3) + 2).join(' ') }
       end
     end
   end
