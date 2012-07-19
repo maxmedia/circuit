@@ -21,7 +21,14 @@ namespace :clobber do
   end
 
   task :doc => ["doc:clobber"]
+
+  desc "Clobber combustion logs"
+  task :combustion_logs do
+    Pathname.glob($rake_root.join("spec", "internal", "log", "*.log")).each do |p|
+      p.truncate(0) rescue nil
+    end
+  end
 end
 
 desc "Clobber All"
-task :clobber => ["doc:clobber", "clobber:pkg", "clobber:coverage"]
+task :clobber => ["doc:clobber", "clobber:pkg", "clobber:coverage", "clobber:combustion_logs"]
