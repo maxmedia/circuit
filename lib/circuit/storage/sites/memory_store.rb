@@ -1,3 +1,5 @@
+require 'active_support/concern'
+
 module Circuit
   module Storage
     module Sites
@@ -7,17 +9,16 @@ module Circuit
         # @param [String] host to find
         # @return [Model] site
         def get(host)
-          sites = Site.all.select {|s| s.host == host or s.aliases.include?(host)}
+          sites = site_klass.all.select {|s| s.host == host or s.aliases.include?(host)}
           if sites.length > 1
             raise MultipleFoundError, "Multiple sites found"
           end
           sites.first
         end
 
-        # Concrete memory Site class
-        class Site
-          include Circuit::Storage::MemoryModel
-          setup_attributes :host, :aliases, :route
+        # In-memory Site module
+        module Site
+          extend ActiveSupport::Concern
 
           # @!attribute host
           #   @return [String] domain name
@@ -25,9 +26,15 @@ module Circuit
           # @!attribute aliases
           #   @return [Array<String>] array of domain name aliases
 
-          # @!attribute route
+          # @!attribute root
           #   @return [Nodes::Model] root node
 
+          included do
+            MemoryStore.site_klass = self
+            setup_attributes :host, :aliases, :root
+          end
+
+          include Circuit::Storage::MemoryModel
           include Circuit::Storage::Sites::Model
           include Circuit::Storage::Sites::Model::Validations
 

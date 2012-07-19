@@ -54,33 +54,23 @@ describe Circuit do
     context "set by class" do
       before { Circuit.set_site_store klass }
       it { Circuit.site_store.should be_instance_of klass }
-      it { Circuit::Site.should == klass.const_get(:Site) }
     end
 
     context "set by instance" do
       let(:instance) { klass.new }
       before { Circuit.set_site_store instance }
       it { Circuit.site_store.should == instance }
-      it { Circuit::Site.should == klass.const_get(:Site) }
     end
 
     context "set by symbol" do
       before { Circuit.set_site_store($mongo_tests ? :mongoid_store : :memory_store) }
       it { Circuit.site_store.should be_instance_of(klass) }
-      it { Circuit::Site.should == klass.const_get(:Site) }
     end
 
     context "set wrong type" do
       it do
         expect { Circuit.set_site_store Object.new }.
           to raise_error(ArgumentError, "Unexpected type for storage instance: Object")
-      end
-    end
-
-    context "set with no Site class" do
-      it do
-        expect { Circuit.set_site_store Object }.
-          to raise_error(ArgumentError, "Cannot determine a Site or Node class for storage type: Object")
       end
     end
   end
@@ -106,33 +96,23 @@ describe Circuit do
     context "set by class" do
       before { Circuit.set_node_store klass }
       it { Circuit.node_store.should be_instance_of klass }
-      it { Circuit::Node.should == klass.const_get(:Node) }
     end
 
     context "set by instance" do
       let(:instance) { klass.new }
       before { Circuit.set_node_store instance }
       it { Circuit.node_store.should == instance }
-      it { Circuit::Node.should == klass.const_get(:Node) }
     end
 
     context "set by symbol" do
       before { Circuit.set_node_store($mongo_tests ? :mongoid_store : :memory_store) }
       it { Circuit.node_store.should be_instance_of klass }
-      it { Circuit::Node.should == klass.const_get(:Node) }
     end
 
     context "set wrong type" do
       it do
         expect { Circuit.set_node_store Object.new }.
           to raise_error(ArgumentError, "Unexpected type for storage instance: Object")
-      end
-    end
-
-    context "set with no Node class" do
-      it do
-        expect { Circuit.set_node_store Object }.
-          to raise_error(ArgumentError, "Cannot determine a Site or Node class for storage type: Object")
       end
     end
   end

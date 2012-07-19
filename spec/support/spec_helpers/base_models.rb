@@ -30,8 +30,8 @@ module SpecHelpers
     extend ActiveSupport::Concern
 
     included do
-      let(:node_class) { Circuit::Node }
-      let(:site_class) { Circuit::Site }
+      let(:node_class) { ($mongo_tests? ::MongoidRouteNode : ::RouteNode) }
+      let(:site_class) { ($mongo_tests? ::MongoidSite : ::Site) }
 
       let(:site_1)                    { site_class.make! :host => "www.foo.com", :aliases => [] }
       let(:root_1)                    { node_class.make! :slug => nil, :site => site_1 }

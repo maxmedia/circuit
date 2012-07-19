@@ -6,8 +6,8 @@ module SpecHelpers
     include BaseModels
 
     def setup_site!(site, behavior)
-      site.route.behavior = behavior
-      site.route.save!
+      site.root.behavior = behavior
+      site.root.save!
       site
     end
 

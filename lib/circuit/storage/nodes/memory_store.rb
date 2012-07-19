@@ -1,3 +1,5 @@
+require 'active_support/concern'
+
 module Circuit
   module Storage
     module Nodes
@@ -7,15 +9,14 @@ module Circuit
         # @param [String] path to find
         # @return [Array<Model>] array of nodes for each path segment
         def get(site, path)
-          find_nodes_for_path(site.route, path)
+          find_nodes_for_path(site.root, path)
         rescue NotFoundError
           return nil
         end
 
-        # Concrete memory Node class
-        class Node
-          include Circuit::Storage::MemoryModel
-          setup_attributes :slug, :behavior_klass, :site, :parent, :children
+        # In-memory Node module
+        module Node
+          extend ActiveSupport::Concern
 
           # @!attribute slug
           #   @return [String] path segment slug
@@ -32,6 +33,11 @@ module Circuit
           # @!attribute children
           #   @return [Array<Sites::Node>] array of child nodes
 
+          included do
+            setup_attributes :slug, :behavior_klass, :site, :parent, :children
+          end
+
+          include Circuit::Storage::MemoryModel
           include Circuit::Storage::Nodes::Model
           include Circuit::Storage::Nodes::Model::Validations
 
@@ -49,7 +55,7 @@ module Circuit
           def save
             return false if invalid?
             unless persisted?
-              self.site.route = self if self.site
+              self.site.root = self if self.site
               self.parent.children << self if self.parent
               self.children.each {|c| c.parent = self}
               self.class.all << self

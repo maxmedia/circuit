@@ -58,16 +58,6 @@ module Circuit
         @instance = klass.new(*args[1..-1])
       end
 
-      case @instance
-      when Nodes::BaseStore
-        ::Circuit.const_set(:Node, @instance.class.const_get(:Node))
-      when Sites::BaseStore
-        ::Circuit.const_set(:Site, @instance.class.const_get(:Site))
-      else
-        bad_instance = @instance; @instance = nil
-        raise ArgumentError, "Cannot determine a Site or Node class for storage type: %s"%[bad_instance.class]
-      end
-
       @instance
     end
   end

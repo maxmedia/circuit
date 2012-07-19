@@ -42,7 +42,7 @@ shared_examples "site store" do
     end
   end
 
-  describe Circuit::Site do
+  describe "site class" do
     subject { site }
 
     context "has aliases" do
@@ -68,9 +68,9 @@ shared_examples "site store" do
       it { subject.save.should be_false }
     end
 
-    context "has route" do
+    context "has root" do
       before { root }
-      it { subject.route.should == root }
+      it { subject.root.should == root }
     end
   end
 end

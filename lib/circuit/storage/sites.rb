@@ -1,3 +1,5 @@
+require 'active_support/core_ext/class/attribute'
+
 module Circuit
   module Storage
     module Sites
@@ -18,6 +20,8 @@ module Circuit
 
       # @abstract Subclass and override {#get}
       class BaseStore
+        class_attribute :site_klass
+
         # @raise MultipleFoundError if multiple sites are found for the given `host`
         # @param [String] host to find
         # @return [Model] site

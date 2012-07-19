@@ -32,7 +32,7 @@ shared_examples "node store" do
            should == [root, child] }
   end
 
-  describe Circuit::Node do
+  describe "node class" do
     subject { child }
 
     context "has slug" do

@@ -40,6 +40,8 @@ describe Circuit::Storage::Nodes do
   end
 
   describe Circuit::Storage::Nodes::MemoryStore do
+    let(:site_class) { ::Site }
+    let(:node_class) { ::RouteNode }
     use_storage :memory_store
     let!(:store) { :memory_store }
     include_examples "node store"
@@ -64,25 +66,25 @@ describe Circuit::Storage::Nodes do
     use_storage :mongoid_store
 
     if $mongo_tests
-      class SubclassA < Circuit::Storage::Nodes::MongoidStore::Node; end
-      class SubclassB < Circuit::Storage::Nodes::MongoidStore::Node; end
+      class SubclassA < MongoidRouteNode; end
+      class SubclassB < MongoidRouteNode; end
       class SubclassC < SubclassA; end
       class SubclassD < SubclassC; end
     end
 
     before do
-      root = Circuit::Storage::Nodes::MongoidStore::Node.create(:site => site, :behavior_klass => "RenderOk")
-      SubclassA.create(:parent => root, :slug => "foo", :behavior_klass => "RenderOk")
-      SubclassB.create(:parent => root, :slug => "bar", :behavior_klass => "RenderOk")
-      SubclassC.create(:parent => root, :slug => "baz", :behavior_klass => "RenderOk")
-      SubclassD.create(:parent => root, :slug => "wow", :behavior_klass => "RenderOk")
+      root_ = ::MongoidRouteNode.create(:site => site, :behavior_klass => "RenderOk")
+      SubclassA.create(:parent => root_, :slug => "foo", :behavior_klass => "RenderOk")
+      SubclassB.create(:parent => root_, :slug => "bar", :behavior_klass => "RenderOk")
+      SubclassC.create(:parent => root_, :slug => "baz", :behavior_klass => "RenderOk")
+      SubclassD.create(:parent => root_, :slug => "wow", :behavior_klass => "RenderOk")
       SubclassA.create(:site => site_1, :behavior_klass => "RenderOk")
     end
 
-    it { site.route.should be_instance_of(Circuit::Storage::Nodes::MongoidStore::Node) }
-    it { site.route.should be_instance_of(Circuit::Node) }
-    it { Circuit.node_store.get(site, "/").last.should be_instance_of(Circuit::Storage::Nodes::MongoidStore::Node) }
-    it { Circuit.node_store.get(site, "/").last.should be_instance_of(Circuit::Node) }
+    it { site.root.class.should include(Circuit::Storage::Nodes::MongoidStore::Node) }
+    it { site.root.should be_instance_of(::MongoidRouteNode) }
+    it { Circuit.node_store.get(site, "/").last.class.should include(Circuit::Storage::Nodes::MongoidStore::Node) }
+    it { Circuit.node_store.get(site, "/").last.should be_instance_of(::MongoidRouteNode) }
     it { Circuit.node_store.get(site, "/foo").last.should be_instance_of(SubclassA) }
     it { Circuit.node_store.get(site, "/bar").last.should be_instance_of(SubclassB) }
     it { Circuit.node_store.get(site, "/baz").last.should be_instance_of(SubclassC) }

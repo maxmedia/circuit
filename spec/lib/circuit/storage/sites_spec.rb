@@ -33,13 +33,14 @@ describe Circuit::Storage::Sites do
 
       it do
         expect { subject.get!("foo").
-          to raise_error(Circuit::Storage::Sites::NotFoundError, "Host not found")
-        }
+          to raise_error(Circuit::Storage::Sites::NotFoundError, "Host not found") }
       end
     end
   end
 
   describe Circuit::Storage::Sites::MemoryStore do
+    let(:site_class) { ::Site }
+    let(:node_class) { ::RouteNode }
     use_storage :memory_store
     let!(:store) { :memory_store }
     include_examples "site store"
@@ -48,7 +49,7 @@ describe Circuit::Storage::Sites do
       subject { site }
       it { should have_attribute(:host) }
       it { should have_attribute(:aliases) }
-      it { should have_attribute(:route) }
+      it { should have_attribute(:root) }
     end
   end
 

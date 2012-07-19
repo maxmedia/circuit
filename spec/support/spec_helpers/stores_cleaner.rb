@@ -41,8 +41,6 @@ module SpecHelpers
     def clear_storage
       Circuit::Storage::Sites.instance_variable_set(:@instance, nil)
       Circuit::Storage::Nodes.instance_variable_set(:@instance, nil)
-      Circuit.send(:remove_const, :Site) rescue NameError
-      Circuit.send(:remove_const, :Node) rescue NameError
     end
   end
 end
