@@ -63,10 +63,12 @@ describe Circuit::Storage::Nodes do
   describe "subclasses in mongo", :if => $mongo_tests do
     use_storage :mongoid_store
 
-    class SubclassA < Circuit::Storage::Nodes::MongoidStore::Node; end
-    class SubclassB < Circuit::Storage::Nodes::MongoidStore::Node; end
-    class SubclassC < SubclassA; end
-    class SubclassD < SubclassC; end
+    if $mongo_tests
+      class SubclassA < Circuit::Storage::Nodes::MongoidStore::Node; end
+      class SubclassB < Circuit::Storage::Nodes::MongoidStore::Node; end
+      class SubclassC < SubclassA; end
+      class SubclassD < SubclassC; end
+    end
 
     before do
       root = Circuit::Storage::Nodes::MongoidStore::Node.create(:site => site, :behavior_klass => "RenderOk")

@@ -71,6 +71,8 @@ RSpec.configure do |config|
   end
 
   config.before(:each) { stub_time! }
+
+  config.order = "random"
 end
 
 # freeze time, so time tests appear to run without time passing.

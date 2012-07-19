@@ -9,6 +9,7 @@ module SpecHelpers
       around :each do |example|
         orig_site_store = Circuit::Storage::Sites.instance_variable_get(:@instance)
         orig_node_store = Circuit::Storage::Nodes.instance_variable_get(:@instance)
+        orig_cru_path = Circuit.cru_path.dup
         clear_storage
 
         if @storage
@@ -23,6 +24,7 @@ module SpecHelpers
         silence_warnings do
           Circuit.set_site_store orig_site_store
           Circuit.set_node_store orig_node_store
+          Circuit.cru_path = orig_cru_path
         end
         ensure_blueprints
       end
