@@ -17,10 +17,14 @@ module Circuit
           raise MissingSiteError, "Rack variable %s is missing"%[::Rack::Request::ENV_SITE]
         end
 
+        log_request(request)
+
         remap! request
         request.route.last.behavior.builder.tap do |builder|
           builder.run(@app) unless builder.app?
         end.call(env)
+      rescue ::Circuit::Storage::Nodes::NotFoundError
+        [404, {"Content-Type" => "text/plain"}, ["Not Found"]]
       end
 
     private
@@ -39,6 +43,11 @@ module Circuit
         else
           raise ::Circuit::Storage::Nodes::NotFoundError, "Path not found"
         end
+      end
+
+      def log_request(request)
+        ln = "[CIRCUIT] "+%w[HOST SCRIPT_NAME PATH_INFO].map {|k| k+": %p"}.join(" ")
+        ::Circuit.logger.info(ln % [request.host, request.script_name, request.path_info])
       end
     end
   end
