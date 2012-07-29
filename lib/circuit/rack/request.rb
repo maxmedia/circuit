@@ -53,6 +53,7 @@ module Circuit
         @env["PATH_INFO"] = "/"+path_segments[route.length..-1].join("/")
         @env["PATH_INFO"] = "" if @env["PATH_INFO"] == "/"
         @env["SCRIPT_NAME"] = route.last.path
+        @env["SCRIPT_NAME"] = "" if @env["SCRIPT_NAME"] == "/" and @env["PATH_INFO"].present?
         @env[ENV_ROUTE] = route;
       end
 
