@@ -9,10 +9,9 @@ module Circuit
         # @param [Sites::Model] site to find path under
         # @param [String] path to find
         # @return [Array<Model>] array of nodes for each path segment
+        # @raise [NotFoundError] if the path is not found and not infinite
         def get(site, path)
           find_nodes_for_path(site.root, path)
-        rescue NotFoundError
-          return nil
         end
 
         # Mongoid Node module
@@ -40,6 +39,7 @@ module Circuit
           included do
             field :slug, :type => String
             field :behavior_klass, :type => String
+            field :infinite, :type => Boolean, :default => false
           end
 
           include Model

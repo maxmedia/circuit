@@ -50,6 +50,15 @@ module Circuit
           self.children.detect {|c| c.slug == segment}
         end
 
+        def finite=(v)
+          self.infinite = !v
+        end
+
+        def finite?
+          !self.infinite?
+        end
+        alias_method :finite, :finite?
+
         # Walks the tree and forms the full path to the Node
         # @return [String] full path down to this node
         def path

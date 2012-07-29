@@ -8,10 +8,9 @@ module Circuit
         # @param [Sites::Model] site to find path under
         # @param [String] path to find
         # @return [Array<Model>] array of nodes for each path segment
+        # @raise [NotFoundError] if the path is not found and not infinite
         def get(site, path)
           find_nodes_for_path(site.root, path)
-        rescue NotFoundError
-          return nil
         end
 
         # In-memory Node module
@@ -34,7 +33,7 @@ module Circuit
           #   @return [Array<Sites::Node>] array of child nodes
 
           included do
-            setup_attributes :slug, :behavior_klass, :site, :parent, :children
+            setup_attributes :slug, :behavior_klass, :site, :parent, :children, :infinite
           end
 
           include Circuit::Storage::MemoryModel
@@ -48,6 +47,7 @@ module Circuit
             self.slug = opts[:slug]
             self.behavior = behavior if behavior
             self.children ||= Array.new
+            self.infinite = opts[:infinite]
           end
 
           # Save the Node to memory
