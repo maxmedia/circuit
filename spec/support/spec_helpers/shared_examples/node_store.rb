@@ -12,7 +12,7 @@ shared_examples "node store" do
   context "get missing root" do
     it do
       expect { subject.get!(dup_site_1, "/") }.
-        to raise_error(Circuit::Storage::Nodes::NotFoundError, "Path not found")
+        to raise_error(Circuit::Storage::Nodes::NotFoundError, "Root path not found")
     end
   end
 
@@ -26,10 +26,17 @@ shared_examples "node store" do
 
   context "get missing route" do
     before { child }
-    it { subject.get(site, child.path+"/foobar").
-           should == [root, child] }
-    it { subject.get!(site, child.path+"/foobar").
-           should == [root, child] }
+    it { subject.get(site, child.path+"/foobar").should be_nil }
+    it do
+      expect { subject.get!(site, child.path+"/foobar") }.
+        to raise_error(Circuit::Storage::Nodes::NotFoundError, "Path not found")
+    end
+
+    context "with inifite flag" do
+      before { child.tap {|c| c.infinite = true}.save! }
+      it { subject.get(site, child.path+"/foobar").
+             should == [root, child] }
+    end
   end
 
   describe "node class" do

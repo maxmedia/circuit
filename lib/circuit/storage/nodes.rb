@@ -45,7 +45,7 @@ module Circuit
               if node = result.last.find_child_by_segment(segment)
                 result << node
               elsif result.last.finite?
-                raise(NotFoundError, "Path not found")
+                return nil
               else
                 break
               end

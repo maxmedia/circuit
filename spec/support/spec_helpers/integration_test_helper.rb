@@ -15,6 +15,7 @@ module SpecHelpers
       before do
         child.slug = "things"
         child.behavior = Circuit::Behavior.get("Things")
+        child.infinite = true
         child.save!
         thing; thing_1; thing_2
       end

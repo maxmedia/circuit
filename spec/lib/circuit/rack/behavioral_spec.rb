@@ -36,8 +36,10 @@ describe Circuit::Rack::Behavioral do
       stub_app_with_circuit_site dup_site_1
     end
 
-    it "should raise a path not found error" do
-      expect { get '/' }.to raise_error(Circuit::Storage::Nodes::NotFoundError, "Path not found")
+    it "should return 404 Not Found" do
+      get "/"
+      last_response.status.should == 404
+      last_response.body.should == "Not Found"
     end
   end
 
