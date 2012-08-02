@@ -1,8 +1,5 @@
 module Circuit
   module Middleware
-    # Raise if rewriting fails.
-    class RewriteError < CircuitError ; end
-
     # Fallthrough Middleware.  Fallsthrough to the application.
     # @example Use the middleware (in rackup)
     #   use Fallthrough
