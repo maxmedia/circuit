@@ -4,7 +4,7 @@ module Circuit
     class MissingSiteError < CircuitError; end
 
     # Finds the route (Array of Nodes) for the request, and executes the 
-    # route's behavior.
+    # route's behavior.  Returns a 404 if an appropriate route is not found.
     class Behavioral
       def initialize(app)
         @app = app
