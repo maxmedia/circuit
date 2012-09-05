@@ -15,5 +15,5 @@ end
 
 use ThingsAuthMiddleware
 use Circuit::Middleware::Rewriter do |request|
-      ["", request.path]
-    end
+  ["", request.path]
+end

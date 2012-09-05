@@ -11,10 +11,7 @@ module Circuit
 
       # Executes the rewrite
       def call(env)
-        request = ::Rack::Request.new(env)
-        request.env["PATH_INFO"] = request.path
-        request.env["SCRIPT_NAME"] = ""
-        ::Circuit.logger.info("[CIRCUIT] Fallthrough: '#{request.path}'")
+        ::Circuit.logger.info("[CIRCUIT] Fallthrough: '#{env["PATH_INFO"]}'")
         @app.call(env)
       end
     end

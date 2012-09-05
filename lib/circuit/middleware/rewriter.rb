@@ -15,7 +15,7 @@ module Circuit
     # @see http://rubydoc.info/gems/rack/Rack/Request Rack::Request documentation
     class Rewriter
       # @param [#call] app Rack app
-      # @yield [script_name, path_info] `SCRIPT_NAME` and `PATH_INF`O values
+      # @yield [script_name, path_info] `SCRIPT_NAME` and `PATH_INFO` values
       # @yield [Request] `Rack::Request` object
       # @yieldreturn [Array<String>] new `script_name` and `path_info`
       def initialize(app, &block)

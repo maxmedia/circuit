@@ -24,13 +24,21 @@ module Circuit
           builder.run(@app) unless builder.app?
         end.call(env)
       rescue ::Circuit::Storage::Nodes::NotFoundError
-        [404, {"Content-Type" => "text/plain"}, ["Not Found"]]
+        # TODO: there should be configuration for setting the behavior for 404 requests.
+        # 
+        # I have edited the below example to pass through to the downstream app. However, 
+        # it would be realistic to need to return a 404 response here instead of passing 
+        # to the downstream app.
+        #
+        @app.call(env)
       end
 
     private
 
       def remap(request)
-        route = ::Circuit.node_store.get(request.site, request.path)
+        root_route = request.site.root
+        
+        route = ::Circuit.node_store.get(root_route, request.path)
         return nil if route.blank?
 
         request.route = route
