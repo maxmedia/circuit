@@ -42,11 +42,15 @@ module Circuit
           [root].tap do |result|
             ::Rack::Request.path_segments(path).each do |segment|
               next if segment.blank?
+              # Find the segment and add it to the result array
               if node = result.last.find_child_by_segment(segment)
                 result << node
               elsif result.last.finite?
+                # Here, we didn't find the segment, and the last node we found is finite, so the
+                # route is not found
                 return nil
               else
+                # This is the infinite route case
                 break
               end
             end
