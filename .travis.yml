@@ -7,3 +7,5 @@ gemfile:
   - Gemfile
   - gemfiles/no-mongo.gemfile
   - gemfiles/rails31.gemfile
+services:
+  - mongodb
