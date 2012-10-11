@@ -90,5 +90,25 @@ shared_examples "node store" do
     context "child should build path" do
       it { subject.path.should == "/#{subject.slug}" }
     end
+
+    context "should be finite by default" do
+      its(:infinite)  { should be_false }
+      its(:infinite?) { should be_false }
+      its(:finite?)   { should be_true }
+    end
+
+    context "should allow setting infinite" do
+      before { child.infinite = true; child.save! }
+      its(:infinite)  { should be_true }
+      its(:infinite?) { should be_true }
+      its(:finite?)   { should be_false }
+    end
+
+    context "should allow setting finite" do
+      before { child.finite = false; child.save! }
+      its(:infinite)  { should be_true }
+      its(:infinite?) { should be_true }
+      its(:finite?)   { should be_false }
+    end
   end
 end

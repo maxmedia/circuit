@@ -31,6 +31,13 @@ describe Circuit::Rack::Behavioral do
     end
   end
 
+  context 'GET /foo/bar which does not exist' do
+    get "/foo/bar"
+    subject { last_response }
+    its(:status) { should == 404 }
+    its(:body) { should == "Not Found" }
+  end
+
   context 'GET / for site with no root' do
     def app
       stub_app_with_circuit_site dup_site_1
