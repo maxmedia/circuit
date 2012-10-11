@@ -1,4 +1,4 @@
-source "http://rubygems.org"
+source "https://rubygems.org"
 
 group :development, :test do
   gem "rake",               "~> 0.9.2"
@@ -9,6 +9,7 @@ end
 group :development do
   gem "yard",               "~> 0.8"
   gem "redcarpet",          "~> 2.1"
+  gem "travis-lint",        "~> 1.4.0"
 end
 
 group :test do

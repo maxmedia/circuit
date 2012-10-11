@@ -1,4 +1,5 @@
 require 'active_support/concern'
+require File.expand_path("../base_models", __FILE__)
 
 module SpecHelpers
   module MultiSiteHelper
